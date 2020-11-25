@@ -13,6 +13,8 @@ namespace Ao3RentcarsApi.Models
         {
         }
 
-        public DbSet<Veiculo> TodoItems { get; set; }
+        public DbSet<Veiculo> Veiculos { get; set; }
+
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }

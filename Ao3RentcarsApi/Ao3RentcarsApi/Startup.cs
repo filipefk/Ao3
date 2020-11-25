@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Ao3RentcarsApi.Models;
 
 namespace Ao3RentcarsApi
 {
@@ -26,7 +28,8 @@ namespace Ao3RentcarsApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<RentcarsContext>(opt =>
+                                               opt.UseInMemoryDatabase("Ao3Rentcars"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

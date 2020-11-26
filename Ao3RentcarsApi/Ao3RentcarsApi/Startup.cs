@@ -28,8 +28,9 @@ namespace Ao3RentcarsApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RentcarsContext>(opt =>
-                                               opt.UseInMemoryDatabase("Ao3Rentcars"));
+            string connectionString = Configuration["ConexaoSqlite:SqliteConnectionString"];
+            services.AddDbContext<RentcarsContext>(options =>
+                                                    options.UseSqlite(connectionString));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -11,6 +11,7 @@ namespace Ao3RentcarsApi.Models
         public RentcarsContext(DbContextOptions<RentcarsContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<Veiculo> Veiculos { get; set; }

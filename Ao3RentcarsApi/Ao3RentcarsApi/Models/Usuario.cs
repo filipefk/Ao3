@@ -18,6 +18,7 @@ namespace Ao3RentcarsApi.Models
         [Required]
         public string Login { get; set; }
         [Required]
+        [Encrypted]
         public string Senha { get; set; }
     }
 }

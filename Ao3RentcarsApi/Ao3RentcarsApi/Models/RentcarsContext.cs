@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.DataEncryption;
 using Microsoft.EntityFrameworkCore.DataEncryption.Providers;
+using System;
 
 namespace Ao3RentcarsApi.Models
 {
@@ -23,6 +24,8 @@ namespace Ao3RentcarsApi.Models
 
         public DbSet<Usuario> Usuarios { get; set; }
 
+        public DbSet<Locacao> Locacoes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.UseEncryption(this._provider);
@@ -33,9 +36,11 @@ namespace Ao3RentcarsApi.Models
                         Id = 1,
                         Nome = "Administrador",
                         Login = "Admin",
-                        Senha = "SenhaAdmin"
+                        Senha = "SenhaAdmin",
+                        DataInclusao = DateTime.Now,
+                        DataAlteracao = DateTime.Now
                     }
-                );
+                ); ;
             modelBuilder.Entity<Veiculo>()
                 .HasData(
                     new Veiculo
@@ -45,7 +50,9 @@ namespace Ao3RentcarsApi.Models
                         Marca = "VOLKSWAGEN",
                         Placa = "BRA0S17",
                         AnoModelo = 2021,
-                        AnoFabricacao = 2020
+                        AnoFabricacao = 2020,
+                        DataInclusao = DateTime.Now,
+                        DataAlteracao = DateTime.Now
                     },
                     new Veiculo
                     {
@@ -54,7 +61,9 @@ namespace Ao3RentcarsApi.Models
                         Marca = "FIAT",
                         Placa = "BEE4R22",
                         AnoModelo = 2021,
-                        AnoFabricacao = 2020
+                        AnoFabricacao = 2020,
+                        DataInclusao = DateTime.Now,
+                        DataAlteracao = DateTime.Now
                     }
                 );
         }

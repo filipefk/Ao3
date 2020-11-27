@@ -13,17 +13,32 @@ namespace Ao3RentcarsApi.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Required]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime DataInclusao { get; set; }
+
+        [Required]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime DataAlteracao { get; set; }
+
         [Required]
         public string Modelo { get; set; }
+
         [Required]
         public string Marca { get; set; }
+
         [Required]
         [MinLength(7)]
         [MaxLength(7)]
         public string Placa { get; set; }
+
         [Required]
         public int AnoModelo { get; set; }
+
         [Required]
         public int AnoFabricacao { get; set; }
+
+        public ICollection<Locacao> Locacoes { get; set; }
     }
 }

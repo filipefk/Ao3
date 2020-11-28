@@ -44,7 +44,6 @@ namespace Ao3RentcarsApi.Models.Dto
             return veiculoDto;
         }
 
-
         /// <summary>
         /// Copia os dados de um VeiculoDto para um novo Veiculo
         /// </summary>
@@ -65,7 +64,6 @@ namespace Ao3RentcarsApi.Models.Dto
             };
             return veiculo;
         }
-
 
         /// <summary>
         /// Copia só os dados para Update (Put) do veiculoDto para o veiculo 

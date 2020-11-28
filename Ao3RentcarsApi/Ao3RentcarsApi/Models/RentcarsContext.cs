@@ -7,7 +7,7 @@ namespace Ao3RentcarsApi.Models
 {
     public class RentcarsContext : DbContext
     {
-        // Recusros para encriptação da senha do usuário
+        // Recusros para encriptação da senha do usuário no banco
         private readonly byte[] _encryptionKey = new byte[] { 0x28, 0x12, 0xbd, 0xd6, 0xe2, 0xab, 0x41, 0x0c, 0x54, 0xf2, 0x10, 0x11, 0x7e, 0x0f, 0xed, 0xd9 };
         private readonly byte[] _encryptionIV = new byte[] { 0x11, 0xc0, 0xc4, 0xf6, 0xa2, 0x2d, 0x0a, 0xb1, 0xb7, 0xda, 0xb9, 0x38, 0x1e, 0x25, 0x0c, 0x21 };
         private readonly IEncryptionProvider _provider;
@@ -15,7 +15,7 @@ namespace Ao3RentcarsApi.Models
         public RentcarsContext(DbContextOptions<RentcarsContext> options)
             : base(options)
         {
-            // Recusros para encriptação da senha do usuário
+            // Recusros para encriptação da senha do usuário no banco
             this._provider = new AesProvider(this._encryptionKey, this._encryptionIV);
         }
 
@@ -29,7 +29,8 @@ namespace Ao3RentcarsApi.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Recusros para encriptação da senha do usuário
+            
+            // Recusros para encriptação da senha do usuário no banco
             modelBuilder.UseEncryption(this._provider);
 
             // Criando Unique Key para o login do Usuário

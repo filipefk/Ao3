@@ -56,6 +56,7 @@ namespace Ao3RentcarsApi.Models
                     new Usuario
                     {
                         Id = 1,
+                        Tipo = 1, // Todos vão ser do tipo "1 - Funcionario" inicialmente
                         Nome = "Administrador",
                         Login = "Admin",
                         Senha = "SenhaAdmin",

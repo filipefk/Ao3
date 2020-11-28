@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ao3RentcarsApi.Migrations
 {
     [DbContext(typeof(RentcarsContext))]
-    [Migration("20201128140027_MigrationOne")]
+    [Migration("20201128162909_MigrationOne")]
     partial class MigrationOne
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,8 +51,8 @@ namespace Ao3RentcarsApi.Migrations
                         {
                             Id = 1,
                             Cpf = "45583420049",
-                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7919),
-                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7135),
+                            DataAlteracao = new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(504),
+                            DataInclusao = new DateTime(2020, 11, 28, 13, 29, 8, 303, DateTimeKind.Local).AddTicks(9700),
                             Nome = "Filipe"
                         });
                 });
@@ -122,6 +122,9 @@ namespace Ao3RentcarsApi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Tipo")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Login")
@@ -134,11 +137,12 @@ namespace Ao3RentcarsApi.Migrations
                         new
                         {
                             Id = 1,
-                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 821, DateTimeKind.Local).AddTicks(7234),
-                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 820, DateTimeKind.Local).AddTicks(449),
+                            DataAlteracao = new DateTime(2020, 11, 28, 13, 29, 8, 301, DateTimeKind.Local).AddTicks(8920),
+                            DataInclusao = new DateTime(2020, 11, 28, 13, 29, 8, 300, DateTimeKind.Local).AddTicks(2428),
                             Login = "Admin",
                             Nome = "Administrador",
-                            Senha = "nxVrOLgeXbfKd0o0Qz8OUA=="
+                            Senha = "nxVrOLgeXbfKd0o0Qz8OUA==",
+                            Tipo = 1
                         });
                 });
 
@@ -187,8 +191,8 @@ namespace Ao3RentcarsApi.Migrations
                             Id = 1,
                             AnoFabricacao = 2020,
                             AnoModelo = 2021,
-                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3721),
-                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3084),
+                            DataAlteracao = new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(6710),
+                            DataInclusao = new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(6064),
                             Marca = "VOLKSWAGEN",
                             Modelo = "Gol 1.0 Flex 12V 5p",
                             Placa = "BRA0S17"
@@ -198,8 +202,8 @@ namespace Ao3RentcarsApi.Migrations
                             Id = 2,
                             AnoFabricacao = 2020,
                             AnoModelo = 2021,
-                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4340),
-                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4334),
+                            DataAlteracao = new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(7350),
+                            DataInclusao = new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(7345),
                             Marca = "FIAT",
                             Modelo = "UNO DRIVE 1.0 Flex 6V 5p",
                             Placa = "BEE4R22"

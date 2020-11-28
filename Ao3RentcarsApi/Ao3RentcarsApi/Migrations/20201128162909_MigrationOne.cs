@@ -29,6 +29,7 @@ namespace Ao3RentcarsApi.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Tipo = table.Column<int>(type: "INTEGER", nullable: false),
                     DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Nome = table.Column<string>(type: "TEXT", nullable: false),
@@ -100,22 +101,22 @@ namespace Ao3RentcarsApi.Migrations
             migrationBuilder.InsertData(
                 table: "Cliente",
                 columns: new[] { "Id", "Cpf", "DataAlteracao", "DataInclusao", "Nome" },
-                values: new object[] { 1, "45583420049", new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7919), new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7135), "Filipe" });
+                values: new object[] { 1, "45583420049", new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(504), new DateTime(2020, 11, 28, 13, 29, 8, 303, DateTimeKind.Local).AddTicks(9700), "Filipe" });
 
             migrationBuilder.InsertData(
                 table: "Usuario",
-                columns: new[] { "Id", "DataAlteracao", "DataInclusao", "Login", "Nome", "Senha" },
-                values: new object[] { 1, new DateTime(2020, 11, 28, 11, 0, 26, 821, DateTimeKind.Local).AddTicks(7234), new DateTime(2020, 11, 28, 11, 0, 26, 820, DateTimeKind.Local).AddTicks(449), "Admin", "Administrador", "nxVrOLgeXbfKd0o0Qz8OUA==" });
+                columns: new[] { "Id", "DataAlteracao", "DataInclusao", "Login", "Nome", "Senha", "Tipo" },
+                values: new object[] { 1, new DateTime(2020, 11, 28, 13, 29, 8, 301, DateTimeKind.Local).AddTicks(8920), new DateTime(2020, 11, 28, 13, 29, 8, 300, DateTimeKind.Local).AddTicks(2428), "Admin", "Administrador", "nxVrOLgeXbfKd0o0Qz8OUA==", 1 });
 
             migrationBuilder.InsertData(
                 table: "Veiculo",
                 columns: new[] { "Id", "AnoFabricacao", "AnoModelo", "DataAlteracao", "DataInclusao", "Marca", "Modelo", "Placa" },
-                values: new object[] { 1, 2020, 2021, new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3721), new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3084), "VOLKSWAGEN", "Gol 1.0 Flex 12V 5p", "BRA0S17" });
+                values: new object[] { 1, 2020, 2021, new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(6710), new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(6064), "VOLKSWAGEN", "Gol 1.0 Flex 12V 5p", "BRA0S17" });
 
             migrationBuilder.InsertData(
                 table: "Veiculo",
                 columns: new[] { "Id", "AnoFabricacao", "AnoModelo", "DataAlteracao", "DataInclusao", "Marca", "Modelo", "Placa" },
-                values: new object[] { 2, 2020, 2021, new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4340), new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4334), "FIAT", "UNO DRIVE 1.0 Flex 6V 5p", "BEE4R22" });
+                values: new object[] { 2, 2020, 2021, new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(7350), new DateTime(2020, 11, 28, 13, 29, 8, 304, DateTimeKind.Local).AddTicks(7345), "FIAT", "UNO DRIVE 1.0 Flex 6V 5p", "BEE4R22" });
 
             migrationBuilder.CreateIndex(
                 name: "IDX_CPF_CLIENTE",

@@ -48,7 +48,7 @@ namespace Ao3RentcarsApi.Dao
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> Apaga(Veiculo veiculo)
+        public async Task<int> Exclui(Veiculo veiculo)
         {
             _context.Veiculos.Remove(veiculo);
             return await _context.SaveChangesAsync();
@@ -69,17 +69,9 @@ namespace Ao3RentcarsApi.Dao
 
         public Veiculo BuscaPorPlaca(string placa)
         {
-            int id = _context.Veiculos
+            return _context.Veiculos
                     .Where(v => v.Placa == placa)
-                    .Select(l => l.Id)
                     .FirstOrDefault();
-
-            if (id > 0)
-            {
-                return _context.Veiculos.Find(id);
-            }
-
-            return null;
         }
 
         public bool EstaLocado(Veiculo veiculo)

@@ -45,12 +45,25 @@ namespace Ao3RentcarsApi.Dao
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> Apaga(Usuario usuario)
+        public async Task<int> Exclui(Usuario usuario)
         {
             _context.Usuarios.Remove(usuario);
             return await _context.SaveChangesAsync();
         }
 
         #endregion ========== OPERAÇÕES BÁSICAS ==========
+
+        #region ========== OPERAÇÕES ESPECÍFICAS DA ENTIDADE ==========
+
+        public async Task<Usuario> BuscaPorLogin(string login)
+        {
+            int id = _context.Usuarios
+                .Where(u => u.Login == login).Select(u => u.Id)
+                .FirstOrDefault();
+
+            return await _context.Usuarios.FindAsync(id);
+        }
+
+        #endregion  ========== OPERAÇÕES ESPECÍFICAS DA ENTIDADE ==========
     }
 }

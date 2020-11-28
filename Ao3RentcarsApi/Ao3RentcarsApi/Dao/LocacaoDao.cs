@@ -46,7 +46,7 @@ namespace Ao3RentcarsApi.Dao
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> Apaga(Locacao locacao)
+        public async Task<int> Exclui(Locacao locacao)
         {
             _context.Locacoes.Remove(locacao);
             return await _context.SaveChangesAsync();

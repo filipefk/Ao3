@@ -48,6 +48,7 @@ namespace Ao3RentcarsApi.Models.Dto
             Usuario usuario = new Usuario()
             {
                 Id = usuarioDto.Id,
+                Tipo = 1, // Todos vão ser do tipo "1 - Funcionario" inicialmente
                 DataInclusao = usuarioDto.DataInclusao,
                 DataAlteracao = usuarioDto.DataAlteracao,
                 Nome = usuarioDto.Nome,

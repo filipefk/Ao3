@@ -12,6 +12,10 @@ namespace Ao3RentcarsApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        // Todos vão ser do tipo "1 - Funcionario" inicialmente
+        [Required]
+        public int Tipo { get; set; }
+
         [Required]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime DataInclusao { get; set; }

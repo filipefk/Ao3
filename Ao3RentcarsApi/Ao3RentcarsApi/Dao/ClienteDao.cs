@@ -45,7 +45,7 @@ namespace Ao3RentcarsApi.Dao
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> Apaga(Cliente cliente)
+        public async Task<int> Exclui(Cliente cliente)
         {
             _context.Clientes.Remove(cliente);
             return await _context.SaveChangesAsync();
@@ -57,15 +57,9 @@ namespace Ao3RentcarsApi.Dao
 
         public Cliente BuscaPorCpf(string cpf)
         {
-            int id = _context.Clientes
+            return _context.Clientes
                         .Where(c => c.Cpf == cpf)
-                        .Select(c => c.Id)
                         .FirstOrDefault();
-            if (id > 0)
-            {
-                return _context.Clientes.Find(id);
-            }
-            return null;
         }
 
         public bool CpfJaCadastrado(Cliente cliente)

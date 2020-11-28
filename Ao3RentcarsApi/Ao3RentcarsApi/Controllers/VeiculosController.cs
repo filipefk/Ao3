@@ -10,6 +10,7 @@ using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
 using Ao3RentcarsApi.Dao;
 using Ao3RentcarsApi.Util;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
 {
@@ -26,7 +27,8 @@ namespace Ao3RentcarsApi.Controllers
 
         // GET: api/Veiculos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VeiculoDto>>> GetTodoItems()
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<VeiculoDto>>> ListaTodos()
         {
             try
             {
@@ -54,7 +56,8 @@ namespace Ao3RentcarsApi.Controllers
 
         // GET: api/Veiculos/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<VeiculoDto>> GetVeiculo(int id)
+        [Authorize]
+        public async Task<ActionResult<VeiculoDto>> Busca(int id)
         {
             try
             {
@@ -92,7 +95,8 @@ namespace Ao3RentcarsApi.Controllers
 
         // PUT: api/Veiculos/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVeiculo(int id, VeiculoDto veiculoDto)
+        [Authorize]
+        public async Task<IActionResult> Altera(int id, VeiculoDto veiculoDto)
         {
             try
             {
@@ -105,13 +109,13 @@ namespace Ao3RentcarsApi.Controllers
 
                 veiculo = VeiculoDto.PutEntity(veiculo, veiculoDto);
                 veiculo.DataAlteracao = DateTime.Now;
-                ValidaVeiculo(veiculo);
+                Valida(veiculo);
 
                 await _dao.Altera(veiculo);
 
                 veiculoDto = VeiculoDto.ToDto(veiculo);
 
-                return CreatedAtAction(nameof(PutVeiculo), new { id = veiculoDto.Id }, veiculoDto);
+                return CreatedAtAction(nameof(Altera), new { id = veiculoDto.Id }, veiculoDto);
             }
             catch (DbUpdateException dbUex)
             {
@@ -144,7 +148,8 @@ namespace Ao3RentcarsApi.Controllers
 
         // POST: api/Veiculos
         [HttpPost]
-        public async Task<ActionResult<VeiculoDto>> PostVeiculo(VeiculoDto veiculoDto)
+        [Authorize]
+        public async Task<ActionResult<VeiculoDto>> Insere(VeiculoDto veiculoDto)
         {
             try
             {
@@ -152,11 +157,11 @@ namespace Ao3RentcarsApi.Controllers
                 veiculo.Id = 0;
                 veiculo.DataInclusao = DateTime.Now;
                 veiculo.DataAlteracao = DateTime.Now;
-                ValidaVeiculo(veiculo);
+                Valida(veiculo);
                 await _dao.Insere(veiculo);
                 veiculoDto = VeiculoDto.ToDto(veiculo);
 
-                return CreatedAtAction(nameof(PostVeiculo), new { id = veiculoDto.Id }, veiculoDto);
+                return CreatedAtAction(nameof(Insere), new { id = veiculoDto.Id }, veiculoDto);
             }
             catch (DbUpdateException dbUex)
             {
@@ -189,7 +194,8 @@ namespace Ao3RentcarsApi.Controllers
 
         // DELETE: api/Veiculos/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVeiculo(int id)
+        [Authorize]
+        public async Task<IActionResult> Exclui(int id)
         {
             try
             {
@@ -199,7 +205,7 @@ namespace Ao3RentcarsApi.Controllers
                     return NotFound();
                 }
 
-                await _dao.Apaga(veiculo);
+                await _dao.Exclui(veiculo);
 
                 return NoContent();
             }
@@ -223,7 +229,7 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        private void ValidaVeiculo(Veiculo veiculo)
+        private void Valida(Veiculo veiculo)
         {
             int MinimoAnoVeiculo = int.Parse(AppData.Configuration["ConsistenciaDados:MinimoAnoVeiculo"]);
             int MaximoAnoVeiculo = DateTime.Now.Year + 1;

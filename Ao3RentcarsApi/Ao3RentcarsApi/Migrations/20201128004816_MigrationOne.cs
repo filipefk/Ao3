@@ -52,7 +52,7 @@ namespace Ao3RentcarsApi.Migrations
                     DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataInicio = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DataFim = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DataFim = table.Column<DateTime>(type: "TEXT", nullable: true),
                     IdUsuario = table.Column<int>(type: "INTEGER", nullable: false),
                     IdVeiculo = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -76,17 +76,17 @@ namespace Ao3RentcarsApi.Migrations
             migrationBuilder.InsertData(
                 table: "Usuario",
                 columns: new[] { "Id", "DataAlteracao", "DataInclusao", "Login", "Nome", "Senha" },
-                values: new object[] { 1, new DateTime(2020, 11, 27, 14, 24, 27, 172, DateTimeKind.Local).AddTicks(1327), new DateTime(2020, 11, 27, 14, 24, 27, 170, DateTimeKind.Local).AddTicks(6039), "Admin", "Administrador", "nxVrOLgeXbfKd0o0Qz8OUA==" });
+                values: new object[] { 1, new DateTime(2020, 11, 27, 21, 48, 15, 682, DateTimeKind.Local).AddTicks(3069), new DateTime(2020, 11, 27, 21, 48, 15, 680, DateTimeKind.Local).AddTicks(5638), "Admin", "Administrador", "nxVrOLgeXbfKd0o0Qz8OUA==" });
 
             migrationBuilder.InsertData(
                 table: "Veiculo",
                 columns: new[] { "Id", "AnoFabricacao", "AnoModelo", "DataAlteracao", "DataInclusao", "Marca", "Modelo", "Placa" },
-                values: new object[] { 1, 2020, 2021, new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(2721), new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(2037), "VOLKSWAGEN", "Gol 1.0 Flex 12V 5p", "BRA0S17" });
+                values: new object[] { 1, 2020, 2021, new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5287), new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(4556), "VOLKSWAGEN", "Gol 1.0 Flex 12V 5p", "BRA0S17" });
 
             migrationBuilder.InsertData(
                 table: "Veiculo",
                 columns: new[] { "Id", "AnoFabricacao", "AnoModelo", "DataAlteracao", "DataInclusao", "Marca", "Modelo", "Placa" },
-                values: new object[] { 2, 2020, 2021, new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(3380), new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(3376), "FIAT", "UNO DRIVE 1.0 Flex 6V 5p", "BEE4R22" });
+                values: new object[] { 2, 2020, 2021, new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5983), new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5978), "FIAT", "UNO DRIVE 1.0 Flex 6V 5p", "BEE4R22" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locacao_IdUsuario",
@@ -97,6 +97,18 @@ namespace Ao3RentcarsApi.Migrations
                 name: "IX_Locacao_IdVeiculo",
                 table: "Locacao",
                 column: "IdVeiculo");
+
+            migrationBuilder.CreateIndex(
+                name: "IDX_LOGIN_USUARIO",
+                table: "Usuario",
+                column: "Login",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IDX_PLACA_VEICULO",
+                table: "Veiculo",
+                column: "Placa",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

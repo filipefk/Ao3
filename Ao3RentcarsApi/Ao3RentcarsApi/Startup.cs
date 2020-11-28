@@ -14,6 +14,7 @@ namespace Ao3RentcarsApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AppData.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }

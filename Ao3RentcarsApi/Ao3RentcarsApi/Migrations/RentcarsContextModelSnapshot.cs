@@ -25,7 +25,7 @@ namespace Ao3RentcarsApi.Migrations
                     b.Property<DateTime>("DataAlteracao")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DataFim")
+                    b.Property<DateTime?>("DataFim")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataInclusao")
@@ -75,14 +75,18 @@ namespace Ao3RentcarsApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Login")
+                        .IsUnique()
+                        .HasDatabaseName("IDX_LOGIN_USUARIO");
+
                     b.ToTable("Usuario");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            DataAlteracao = new DateTime(2020, 11, 27, 14, 24, 27, 172, DateTimeKind.Local).AddTicks(1327),
-                            DataInclusao = new DateTime(2020, 11, 27, 14, 24, 27, 170, DateTimeKind.Local).AddTicks(6039),
+                            DataAlteracao = new DateTime(2020, 11, 27, 21, 48, 15, 682, DateTimeKind.Local).AddTicks(3069),
+                            DataInclusao = new DateTime(2020, 11, 27, 21, 48, 15, 680, DateTimeKind.Local).AddTicks(5638),
                             Login = "Admin",
                             Nome = "Administrador",
                             Senha = "nxVrOLgeXbfKd0o0Qz8OUA=="
@@ -122,6 +126,10 @@ namespace Ao3RentcarsApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Placa")
+                        .IsUnique()
+                        .HasDatabaseName("IDX_PLACA_VEICULO");
+
                     b.ToTable("Veiculo");
 
                     b.HasData(
@@ -130,8 +138,8 @@ namespace Ao3RentcarsApi.Migrations
                             Id = 1,
                             AnoFabricacao = 2020,
                             AnoModelo = 2021,
-                            DataAlteracao = new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(2721),
-                            DataInclusao = new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(2037),
+                            DataAlteracao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5287),
+                            DataInclusao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(4556),
                             Marca = "VOLKSWAGEN",
                             Modelo = "Gol 1.0 Flex 12V 5p",
                             Placa = "BRA0S17"
@@ -141,8 +149,8 @@ namespace Ao3RentcarsApi.Migrations
                             Id = 2,
                             AnoFabricacao = 2020,
                             AnoModelo = 2021,
-                            DataAlteracao = new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(3380),
-                            DataInclusao = new DateTime(2020, 11, 27, 14, 24, 27, 174, DateTimeKind.Local).AddTicks(3376),
+                            DataAlteracao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5983),
+                            DataInclusao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5978),
                             Marca = "FIAT",
                             Modelo = "UNO DRIVE 1.0 Flex 6V 5p",
                             Placa = "BEE4R22"

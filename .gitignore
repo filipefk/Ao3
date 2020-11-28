@@ -348,3 +348,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Arquivos temporários do DBeaver
+*.db-shm
+*.db-wal

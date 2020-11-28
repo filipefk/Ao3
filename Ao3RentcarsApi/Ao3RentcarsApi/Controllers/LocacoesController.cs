@@ -107,7 +107,8 @@ namespace Ao3RentcarsApi.Controllers
 
                 await _dao.Altera(locacao);
 
-                return NoContent();
+                locacaoDto = LocacaoDto.ToDto(locacao);
+                return CreatedAtAction(nameof(PutLocacao), new { id = locacaoDto.Id }, locacaoDto);
             }
             catch (DbUpdateException dbUex)
             {
@@ -151,7 +152,8 @@ namespace Ao3RentcarsApi.Controllers
                 ValidaLocacao(locacao);
                 await _dao.Insere(locacao);
 
-                return CreatedAtAction(nameof(GetLocacao), new { id = locacao.Id }, locacao);
+                locacaoDto = LocacaoDto.ToDto(locacao);
+                return CreatedAtAction(nameof(PostLocacao), new { id = locacaoDto.Id }, locacaoDto);
             }
             catch (DbUpdateException dbUex)
             {
@@ -227,6 +229,10 @@ namespace Ao3RentcarsApi.Controllers
             if (locacao.DataInicio <= DateTime.MinValue)
             {
                 throw new ArgumentException("Data de início da locação inválida");
+            }
+            if (locacao.DataFimPrevisto <= DateTime.MinValue)
+            {
+                throw new ArgumentException("Data de fim previsto da locação inválida");
             }
             if (locacao.DataFim != null && locacao.DataFim <= DateTime.MinValue)
             {

@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Ao3RentcarsApi.Util;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ao3RentcarsApi.Models
 {
-    [Table("Usuario")]
-    public class Usuario
+    [Table("Cliente")]
+    public class Cliente
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,12 +24,14 @@ namespace Ao3RentcarsApi.Models
         [Required]
         public string Nome { get; set; }
 
-        [Required]
-        public string Login { get; set; }
+        private string _cpf;
 
         [Required]
-        [Encrypted]
-        public string Senha { get; set; }
+        public string Cpf
+        {
+            get { return _cpf; }
+            set { _cpf = Validador.SoNumeros(value); }
+        }
 
         public ICollection<Locacao> Locacoes { get; set; }
     }

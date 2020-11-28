@@ -8,6 +8,22 @@ namespace Ao3RentcarsApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Cliente",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Nome = table.Column<string>(type: "TEXT", nullable: false),
+                    Cpf = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cliente", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuario",
                 columns: table => new
                 {
@@ -52,13 +68,21 @@ namespace Ao3RentcarsApi.Migrations
                     DataInclusao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataAlteracao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataInicio = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DataFimPrevisto = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataFim = table.Column<DateTime>(type: "TEXT", nullable: true),
                     IdUsuario = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdVeiculo = table.Column<int>(type: "INTEGER", nullable: false)
+                    IdVeiculo = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdCliente = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Locacao", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Locacao_Cliente_IdCliente",
+                        column: x => x.IdCliente,
+                        principalTable: "Cliente",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Locacao_Usuario_IdUsuario",
                         column: x => x.IdUsuario,
@@ -74,19 +98,35 @@ namespace Ao3RentcarsApi.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Cliente",
+                columns: new[] { "Id", "Cpf", "DataAlteracao", "DataInclusao", "Nome" },
+                values: new object[] { 1, "45583420049", new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7919), new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7135), "Filipe" });
+
+            migrationBuilder.InsertData(
                 table: "Usuario",
                 columns: new[] { "Id", "DataAlteracao", "DataInclusao", "Login", "Nome", "Senha" },
-                values: new object[] { 1, new DateTime(2020, 11, 27, 21, 48, 15, 682, DateTimeKind.Local).AddTicks(3069), new DateTime(2020, 11, 27, 21, 48, 15, 680, DateTimeKind.Local).AddTicks(5638), "Admin", "Administrador", "nxVrOLgeXbfKd0o0Qz8OUA==" });
+                values: new object[] { 1, new DateTime(2020, 11, 28, 11, 0, 26, 821, DateTimeKind.Local).AddTicks(7234), new DateTime(2020, 11, 28, 11, 0, 26, 820, DateTimeKind.Local).AddTicks(449), "Admin", "Administrador", "nxVrOLgeXbfKd0o0Qz8OUA==" });
 
             migrationBuilder.InsertData(
                 table: "Veiculo",
                 columns: new[] { "Id", "AnoFabricacao", "AnoModelo", "DataAlteracao", "DataInclusao", "Marca", "Modelo", "Placa" },
-                values: new object[] { 1, 2020, 2021, new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5287), new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(4556), "VOLKSWAGEN", "Gol 1.0 Flex 12V 5p", "BRA0S17" });
+                values: new object[] { 1, 2020, 2021, new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3721), new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3084), "VOLKSWAGEN", "Gol 1.0 Flex 12V 5p", "BRA0S17" });
 
             migrationBuilder.InsertData(
                 table: "Veiculo",
                 columns: new[] { "Id", "AnoFabricacao", "AnoModelo", "DataAlteracao", "DataInclusao", "Marca", "Modelo", "Placa" },
-                values: new object[] { 2, 2020, 2021, new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5983), new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5978), "FIAT", "UNO DRIVE 1.0 Flex 6V 5p", "BEE4R22" });
+                values: new object[] { 2, 2020, 2021, new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4340), new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4334), "FIAT", "UNO DRIVE 1.0 Flex 6V 5p", "BEE4R22" });
+
+            migrationBuilder.CreateIndex(
+                name: "IDX_CPF_CLIENTE",
+                table: "Cliente",
+                column: "Cpf",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locacao_IdCliente",
+                table: "Locacao",
+                column: "IdCliente");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locacao_IdUsuario",
@@ -115,6 +155,9 @@ namespace Ao3RentcarsApi.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Locacao");
+
+            migrationBuilder.DropTable(
+                name: "Cliente");
 
             migrationBuilder.DropTable(
                 name: "Usuario");

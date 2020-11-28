@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Ao3RentcarsApi.Models;
+using Ao3RentcarsApi.Util;
 
 namespace Ao3RentcarsApi
 {
@@ -13,16 +14,13 @@ namespace Ao3RentcarsApi
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
             AppData.Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration["ConexaoSqlite:SqliteConnectionString"];
+            string connectionString = AppData.Configuration["ConexaoSqlite:SqliteConnectionString"];
             services.AddDbContext<RentcarsContext>(options =>
                                                     options.UseSqlite(connectionString));
             services.AddControllers();

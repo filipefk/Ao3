@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ao3RentcarsApi
+namespace Ao3RentcarsApi.Util
 {
     public static class AppData
     {

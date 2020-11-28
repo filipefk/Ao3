@@ -13,22 +13,22 @@ namespace Ao3RentcarsApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuariosController : ControllerBase
+    public class ClientesController : ControllerBase
     {
-        private readonly UsuarioDao _dao;
+        private readonly ClienteDao _dao;
 
-        public UsuariosController(RentcarsContext context)
+        public ClientesController(RentcarsContext context)
         {
-            _dao = new UsuarioDao(context);
+            _dao = new ClienteDao(context);
         }
 
-        // GET: api/Usuarios
+        // GET: api/Clientes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsuarioDto>>> GetUsuarios()
+        public async Task<ActionResult<IEnumerable<ClienteDto>>> GetClientes()
         {
             try
             {
-                return UsuarioDto.ToDtoList(await _dao.ListaTodos());
+                return ClienteDto.ToDtoList(await _dao.ListaTodos());
             }
             catch (SqliteException sqlLex)
             {
@@ -46,27 +46,27 @@ namespace Ao3RentcarsApi.Controllers
                 {
                     msg += " - " + ex.InnerException.Message;
                 }
-                throw new ArgumentException("Erro ao tentar buscar a lista de usuários - " + msg);
+                throw new ArgumentException("Erro ao tentar buscar a lista de clientes - " + msg);
             }
 
         }
 
-        // GET: api/Usuarios/5
+        // GET: api/Clientes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UsuarioDto>> GetUsuario(int id)
+        public async Task<ActionResult<ClienteDto>> GetCliente(int id)
         {
             try
             {
-                Usuario usuario = await _dao.Busca(id);
+                Cliente cliente = await _dao.Busca(id);
 
-                if (usuario == null)
+                if (cliente == null)
                 {
                     return NotFound();
                 }
 
-                UsuarioDto usuarioDto = UsuarioDto.ToDto(usuario);
+                ClienteDto clienteDto = ClienteDto.ToDto(cliente);
 
-                return usuarioDto;
+                return clienteDto;
             }
             catch (SqliteException sqlLex)
             {
@@ -84,32 +84,32 @@ namespace Ao3RentcarsApi.Controllers
                 {
                     msg += " - " + ex.InnerException.Message;
                 }
-                throw new ArgumentException("Erro ao tentar buscar o usuário de id = " + id + " - " + msg);
+                throw new ArgumentException("Erro ao tentar buscar o cliente de id = " + id + " - " + msg);
             }
         }
 
-        // PUT: api/Usuarios/5
+        // PUT: api/Clientes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, UsuarioDto usuarioDto)
+        public async Task<IActionResult> PutCliente(int id, ClienteDto clienteDto)
         {
             try
             {
-                Usuario usuario = await _dao.Busca(id);
+                Cliente cliente = await _dao.Busca(id);
 
-                if (usuario == null)
+                if (cliente == null)
                 {
                     return NotFound();
                 }
 
-                usuario = UsuarioDto.PutEntity(usuario, usuarioDto);
-                usuario.DataAlteracao = DateTime.Now;
-                ValidaUsuario(usuario);
+                cliente = ClienteDto.PutEntity(cliente, clienteDto);
+                cliente.DataAlteracao = DateTime.Now;
+                ValidaCliente(cliente);
 
-                await _dao.Altera(usuario);
+                await _dao.Altera(cliente);
 
-                usuarioDto = UsuarioDto.ToDto(usuario);
+                clienteDto = ClienteDto.ToDto(cliente);
 
-                return CreatedAtAction(nameof(PutUsuario), new { id = usuarioDto.Id }, usuarioDto);
+                return CreatedAtAction(nameof(PutCliente), new { id = clienteDto.Id }, clienteDto);
             }
             catch (DbUpdateException dbUex)
             {
@@ -136,25 +136,25 @@ namespace Ao3RentcarsApi.Controllers
                 {
                     msg += " - " + ex.InnerException.Message;
                 }
-                throw new ArgumentException("Erro ao tentar alterar o usuário de id = " + id + " - " + msg);
+                throw new ArgumentException("Erro ao tentar alterar o cliente de id = " + id + " - " + msg);
             }
         }
 
-        // POST: api/Usuarios
+        // POST: api/Clientes
         [HttpPost]
-        public async Task<ActionResult<UsuarioDto>> PostUsuario(UsuarioDto usuarioDto)
+        public async Task<ActionResult<ClienteDto>> PostCliente(ClienteDto clienteDto)
         {
             try
             {
-                Usuario usuario = UsuarioDto.ToEntity(usuarioDto);
-                usuario.Id = 0;
-                usuario.DataInclusao = DateTime.Now;
-                usuario.DataAlteracao = DateTime.Now;
-                ValidaUsuario(usuario);
-                await _dao.Insere(usuario);
-                usuarioDto = UsuarioDto.ToDto(usuario);
+                Cliente cliente = ClienteDto.ToEntity(clienteDto);
+                cliente.Id = 0;
+                cliente.DataInclusao = DateTime.Now;
+                cliente.DataAlteracao = DateTime.Now;
+                ValidaCliente(cliente);
+                await _dao.Insere(cliente);
+                clienteDto = ClienteDto.ToDto(cliente);
 
-                return CreatedAtAction(nameof(PostUsuario), new { id = usuarioDto.Id }, usuarioDto);
+                return CreatedAtAction(nameof(PostCliente), new { id = clienteDto.Id }, clienteDto);
             }
             catch (DbUpdateException dbUex)
             {
@@ -181,23 +181,23 @@ namespace Ao3RentcarsApi.Controllers
                 {
                     msg += " - " + ex.InnerException.Message;
                 }
-                throw new ArgumentException("Erro ao tentar criar um novo usuário - " + msg);
+                throw new ArgumentException("Erro ao tentar criar um novo cliente - " + msg);
             }
         }
 
-        // DELETE: api/Usuarios/5
+        // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsuario(int id)
+        public async Task<IActionResult> DeleteCliente(int id)
         {
             try
             {
-                Usuario usuario = await _dao.Busca(id);
-                if (usuario == null)
+                Cliente cliente = await _dao.Busca(id);
+                if (cliente == null)
                 {
                     return NotFound();
                 }
 
-                await _dao.Apaga(usuario);
+                await _dao.Apaga(cliente);
 
                 return NoContent();
             }
@@ -217,28 +217,39 @@ namespace Ao3RentcarsApi.Controllers
                 {
                     msg += " - " + ex.InnerException.Message;
                 }
-                throw new ArgumentException("Erro ao tentar excluir o usuário de id = " + id + " - " + msg);
+                throw new ArgumentException("Erro ao tentar excluir o cliente de id = " + id + " - " + msg);
             }
         }
 
-        private void ValidaUsuario(Usuario usuario)
+        private void ValidaCliente(Cliente cliente)
         {
-            int TamanhoMinimoNomeUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoNomeUsuario"]);
-            if (string.IsNullOrEmpty(usuario.Nome) || usuario.Nome.Trim().Length < TamanhoMinimoNomeUsuario)
+            int TamanhoMinimoNomeCliente = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoNomeCliente"]);
+            if (string.IsNullOrEmpty(cliente.Nome) || cliente.Nome.Trim().Length < TamanhoMinimoNomeCliente)
             {
-                throw new ArgumentException("O nome do usuário é obrigatório, não pode ser em branco e deve ter mais de " + TamanhoMinimoNomeUsuario + " caracteres");
+                throw new ArgumentException("O nome do cliente é obrigatório, não pode ser em branco e deve ter mais de " + TamanhoMinimoNomeCliente + " caracteres");
             }
-            int TamanhoMinimoLoginUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoLoginUsuario"]);
-            if (string.IsNullOrEmpty(usuario.Login) || usuario.Login.Trim().Length < TamanhoMinimoLoginUsuario)
+            if (!Validador.CpfValido(cliente.Cpf))
             {
-                throw new ArgumentException("O login do usuário é obrigatório, não pode ser em branco e deve ter mais de " + TamanhoMinimoLoginUsuario + " caracteres");
+                throw new ArgumentException("Cpf inválido");
             }
-            int TamanhoMinimoSenhaUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoSenhaUsuario"]);
-            if (string.IsNullOrEmpty(usuario.Senha) || usuario.Senha.Trim().Length < TamanhoMinimoSenhaUsuario)
+            if (cliente.Id == 0)
             {
-                throw new ArgumentException("A senha do usuário é obrigatória, não pode ser em branco e deve ter mais de " + TamanhoMinimoLoginUsuario + " caracteres");
+                // Cadastrando um novo cliente, verificar se o Cpf dele já está cadastrado
+                string nome = _dao.NomeDoCpf(cliente.Cpf);
+                if (!string.IsNullOrEmpty(nome))
+                {
+                    throw new ArgumentException("O Cpf informado já está cadastrado para o cliente " + nome);
+                }
+            }
+            else
+            {
+                // Validado conflito entre Cpfs
+                Cliente clienteDb = _dao.BuscaPorCpf(cliente.Cpf);
+                if (cliente.Id != clienteDb.Id)
+                {
+                    throw new ArgumentException("O Cpf informado já está cadastrado para o cliente " + clienteDb.Nome);
+                }
             }
         }
-
     }
 }

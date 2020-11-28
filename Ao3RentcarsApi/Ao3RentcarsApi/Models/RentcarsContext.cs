@@ -23,6 +23,8 @@ namespace Ao3RentcarsApi.Models
 
         public DbSet<Usuario> Usuarios { get; set; }
 
+        public DbSet<Cliente> Clientes { get; set; }
+
         public DbSet<Locacao> Locacoes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,6 +44,12 @@ namespace Ao3RentcarsApi.Models
                 .IsUnique()
                 .HasDatabaseName("IDX_PLACA_VEICULO");
 
+            // Criando Unique Key para o Cpf do cliente
+            modelBuilder.Entity<Cliente>()
+                .HasIndex(c => c.Cpf)
+                .IsUnique()
+                .HasDatabaseName("IDX_CPF_CLIENTE");
+
             // Criando uma carga inicial de dados
             modelBuilder.Entity<Usuario>()
                 .HasData(
@@ -54,7 +62,18 @@ namespace Ao3RentcarsApi.Models
                         DataInclusao = DateTime.Now,
                         DataAlteracao = DateTime.Now
                     }
-                ); ;
+                );
+            modelBuilder.Entity<Cliente>()
+                .HasData(
+                    new Cliente
+                    {
+                        Id = 1,
+                        Nome = "Filipe",
+                        Cpf = "45583420049",
+                        DataInclusao = DateTime.Now,
+                        DataAlteracao = DateTime.Now
+                    }
+                );
             modelBuilder.Entity<Veiculo>()
                 .HasData(
                     new Veiculo

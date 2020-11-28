@@ -25,6 +25,9 @@ namespace Ao3RentcarsApi.Models
 		[Required]
 		public DateTime DataInicio { get; set; }
 
+		[Required]
+		public DateTime DataFimPrevisto { get; set; }
+
 		public DateTime? DataFim { get; set; }
 
 		[ForeignKey("Usuario")]
@@ -34,5 +37,9 @@ namespace Ao3RentcarsApi.Models
 		[ForeignKey("Veiculo")]
 		public int IdVeiculo { get; set; }
 		public Veiculo Veiculo { get; set; }
+
+		[ForeignKey("Cliente")]
+		public int IdCliente { get; set; }
+		public Cliente Cliente { get; set; }
 	}
 }

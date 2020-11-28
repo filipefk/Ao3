@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ao3RentcarsApi.Migrations
 {
     [DbContext(typeof(RentcarsContext))]
-    [Migration("20201128004816_MigrationOne")]
+    [Migration("20201128140027_MigrationOne")]
     partial class MigrationOne
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,45 @@ namespace Ao3RentcarsApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("Ao3RentcarsApi.Models.Cliente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataAlteracao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Cpf")
+                        .IsUnique()
+                        .HasDatabaseName("IDX_CPF_CLIENTE");
+
+                    b.ToTable("Cliente");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cpf = "45583420049",
+                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7919),
+                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 823, DateTimeKind.Local).AddTicks(7135),
+                            Nome = "Filipe"
+                        });
+                });
 
             modelBuilder.Entity("Ao3RentcarsApi.Models.Locacao", b =>
                 {
@@ -30,11 +69,17 @@ namespace Ao3RentcarsApi.Migrations
                     b.Property<DateTime?>("DataFim")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DataFimPrevisto")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DataInclusao")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("INTEGER");
@@ -43,6 +88,8 @@ namespace Ao3RentcarsApi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdCliente");
 
                     b.HasIndex("IdUsuario");
 
@@ -87,8 +134,8 @@ namespace Ao3RentcarsApi.Migrations
                         new
                         {
                             Id = 1,
-                            DataAlteracao = new DateTime(2020, 11, 27, 21, 48, 15, 682, DateTimeKind.Local).AddTicks(3069),
-                            DataInclusao = new DateTime(2020, 11, 27, 21, 48, 15, 680, DateTimeKind.Local).AddTicks(5638),
+                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 821, DateTimeKind.Local).AddTicks(7234),
+                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 820, DateTimeKind.Local).AddTicks(449),
                             Login = "Admin",
                             Nome = "Administrador",
                             Senha = "nxVrOLgeXbfKd0o0Qz8OUA=="
@@ -140,8 +187,8 @@ namespace Ao3RentcarsApi.Migrations
                             Id = 1,
                             AnoFabricacao = 2020,
                             AnoModelo = 2021,
-                            DataAlteracao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5287),
-                            DataInclusao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(4556),
+                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3721),
+                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(3084),
                             Marca = "VOLKSWAGEN",
                             Modelo = "Gol 1.0 Flex 12V 5p",
                             Placa = "BRA0S17"
@@ -151,8 +198,8 @@ namespace Ao3RentcarsApi.Migrations
                             Id = 2,
                             AnoFabricacao = 2020,
                             AnoModelo = 2021,
-                            DataAlteracao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5983),
-                            DataInclusao = new DateTime(2020, 11, 27, 21, 48, 15, 684, DateTimeKind.Local).AddTicks(5978),
+                            DataAlteracao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4340),
+                            DataInclusao = new DateTime(2020, 11, 28, 11, 0, 26, 824, DateTimeKind.Local).AddTicks(4334),
                             Marca = "FIAT",
                             Modelo = "UNO DRIVE 1.0 Flex 6V 5p",
                             Placa = "BEE4R22"
@@ -161,6 +208,12 @@ namespace Ao3RentcarsApi.Migrations
 
             modelBuilder.Entity("Ao3RentcarsApi.Models.Locacao", b =>
                 {
+                    b.HasOne("Ao3RentcarsApi.Models.Cliente", "Cliente")
+                        .WithMany("Locacoes")
+                        .HasForeignKey("IdCliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Ao3RentcarsApi.Models.Usuario", "Usuario")
                         .WithMany("Locacoes")
                         .HasForeignKey("IdUsuario")
@@ -173,9 +226,16 @@ namespace Ao3RentcarsApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Cliente");
+
                     b.Navigation("Usuario");
 
                     b.Navigation("Veiculo");
+                });
+
+            modelBuilder.Entity("Ao3RentcarsApi.Models.Cliente", b =>
+                {
+                    b.Navigation("Locacoes");
                 });
 
             modelBuilder.Entity("Ao3RentcarsApi.Models.Usuario", b =>

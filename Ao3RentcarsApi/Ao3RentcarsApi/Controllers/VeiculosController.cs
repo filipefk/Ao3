@@ -9,6 +9,7 @@ using Ao3RentcarsApi.Models;
 using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
 using Ao3RentcarsApi.Dao;
+using Ao3RentcarsApi.Util;
 
 namespace Ao3RentcarsApi.Controllers
 {
@@ -108,7 +109,9 @@ namespace Ao3RentcarsApi.Controllers
 
                 await _dao.Altera(veiculo);
 
-                return NoContent();
+                veiculoDto = VeiculoDto.ToDto(veiculo);
+
+                return CreatedAtAction(nameof(PutVeiculo), new { id = veiculoDto.Id }, veiculoDto);
             }
             catch (DbUpdateException dbUex)
             {
@@ -151,8 +154,9 @@ namespace Ao3RentcarsApi.Controllers
                 veiculo.DataAlteracao = DateTime.Now;
                 ValidaVeiculo(veiculo);
                 await _dao.Insere(veiculo);
+                veiculoDto = VeiculoDto.ToDto(veiculo);
 
-                return CreatedAtAction(nameof(GetVeiculo), new { id = veiculo.Id }, veiculo);
+                return CreatedAtAction(nameof(PostVeiculo), new { id = veiculoDto.Id }, veiculoDto);
             }
             catch (DbUpdateException dbUex)
             {

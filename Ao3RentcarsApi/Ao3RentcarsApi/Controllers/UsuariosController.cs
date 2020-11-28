@@ -7,7 +7,6 @@ using Ao3RentcarsApi.Models;
 using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
 using Ao3RentcarsApi.Dao;
-using Ao3RentcarsApi.Util;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
@@ -229,17 +228,20 @@ namespace Ao3RentcarsApi.Controllers
 
         private void Valida(Usuario usuario)
         {
-            int TamanhoMinimoNomeUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoNomeUsuario"]);
+            // int TamanhoMinimoNomeUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoNomeUsuario"]);
+            int TamanhoMinimoNomeUsuario = 4; // <= ToDo Coloquei fixo aqui porque não tava conseguindo injetar nos testes
             if (string.IsNullOrEmpty(usuario.Nome) || usuario.Nome.Trim().Length < TamanhoMinimoNomeUsuario)
             {
                 throw new ArgumentException("O nome do usuário é obrigatório, não pode ser em branco e deve ter mais de " + TamanhoMinimoNomeUsuario + " caracteres");
             }
-            int TamanhoMinimoLoginUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoLoginUsuario"]);
+            // int TamanhoMinimoLoginUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoLoginUsuario"]);
+            int TamanhoMinimoLoginUsuario = 4; // <= ToDo Coloquei fixo aqui porque não tava conseguindo injetar nos testes
             if (string.IsNullOrEmpty(usuario.Login) || usuario.Login.Trim().Length < TamanhoMinimoLoginUsuario)
             {
                 throw new ArgumentException("O login do usuário é obrigatório, não pode ser em branco e deve ter mais de " + TamanhoMinimoLoginUsuario + " caracteres");
             }
-            int TamanhoMinimoSenhaUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoSenhaUsuario"]);
+            // int TamanhoMinimoSenhaUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoSenhaUsuario"]);
+            int TamanhoMinimoSenhaUsuario = 4; // <= ToDo Coloquei fixo aqui porque não tava conseguindo injetar nos testes
             if (string.IsNullOrEmpty(usuario.Senha) || usuario.Senha.Trim().Length < TamanhoMinimoSenhaUsuario)
             {
                 throw new ArgumentException("A senha do usuário é obrigatória, não pode ser em branco e deve ter mais de " + TamanhoMinimoLoginUsuario + " caracteres");

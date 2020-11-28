@@ -3,7 +3,6 @@ using System;
 using Ao3RentcarsApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ao3RentcarsApi.Migrations
 {

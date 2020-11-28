@@ -7,7 +7,7 @@ using Ao3RentcarsApi.Models;
 using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
 using Ao3RentcarsApi.Dao;
-using Ao3RentcarsApi.Util;
+using Ao3RentcarsApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
@@ -229,7 +229,8 @@ namespace Ao3RentcarsApi.Controllers
 
         private void Valida(Cliente cliente)
         {
-            int TamanhoMinimoNomeCliente = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoNomeCliente"]);
+            //int TamanhoMinimoNomeCliente = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoNomeCliente"]);
+            int TamanhoMinimoNomeCliente = 4; // <= ToDo Coloquei fixo aqui porque não tava conseguindo injetar nos testes
             if (string.IsNullOrEmpty(cliente.Nome) || cliente.Nome.Trim().Length < TamanhoMinimoNomeCliente)
             {
                 throw new ArgumentException("O nome do cliente é obrigatório, não pode ser em branco e deve ter mais de " + TamanhoMinimoNomeCliente + " caracteres");

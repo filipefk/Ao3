@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ao3RentcarsApi.Models;
 using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
 using Ao3RentcarsApi.Dao;
-using Ao3RentcarsApi.Util;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
@@ -231,7 +228,8 @@ namespace Ao3RentcarsApi.Controllers
 
         private void Valida(Veiculo veiculo)
         {
-            int MinimoAnoVeiculo = int.Parse(AppData.Configuration["ConsistenciaDados:MinimoAnoVeiculo"]);
+            //int MinimoAnoVeiculo = int.Parse(AppData.Configuration["ConsistenciaDados:MinimoAnoVeiculo"]);
+            int MinimoAnoVeiculo = 1990;  // <= ToDo Coloquei fixo aqui porque não tava conseguindo injetar nos testes
             int MaximoAnoVeiculo = DateTime.Now.Year + 1;
             if (veiculo.AnoFabricacao < MinimoAnoVeiculo)
             {

@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Ao3RentcarsApi.Util
+namespace Ao3RentcarsApi.Helpers
 {
     public static class AppData
     {

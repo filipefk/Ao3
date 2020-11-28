@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Ao3RentcarsApi.Models;
-using Ao3RentcarsApi.Util;
 
 namespace Ao3RentcarsApi.Helpers
 {
@@ -14,8 +13,8 @@ namespace Ao3RentcarsApi.Helpers
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            //chave secreta, geralmente se coloca em arquivo de configuração
-            var key = Encoding.ASCII.GetBytes(AppData.Configuration["ControleAcesso:ChaveSecreta"]);
+            //var key = Encoding.ASCII.GetBytes(AppData.Configuration["ControleAcesso:ChaveSecreta"]);
+            var key = Encoding.ASCII.GetBytes("ZWRpw6fDo28gZW0gY29tcHV0YWRvcmE="); // <= ToDo Coloquei fixo aqui porque não tava conseguindo injetar nos testes
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

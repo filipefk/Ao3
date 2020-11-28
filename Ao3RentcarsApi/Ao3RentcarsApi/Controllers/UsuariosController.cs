@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ao3RentcarsApi.Models;
 using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
+using Ao3RentcarsApi.Dao;
 
 namespace Ao3RentcarsApi.Controllers
 {
@@ -15,11 +16,11 @@ namespace Ao3RentcarsApi.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly RentcarsContext _context;
+        private readonly UsuarioDao _dao;
 
         public UsuariosController(RentcarsContext context)
         {
-            _context = context;
+            _dao = new UsuarioDao(context);
         }
 
         // GET: api/Usuarios
@@ -28,7 +29,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                return UsuarioDto.ToDtoList(await _context.Usuarios.ToListAsync());
+                return UsuarioDto.ToDtoList(await _dao.ListaTodos());
             }
             catch (SqliteException sqlLex)
             {
@@ -57,7 +58,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Usuario usuario = await UsuarioById(id);
+                Usuario usuario = await _dao.Busca(id);
 
                 if (usuario == null)
                 {
@@ -94,7 +95,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Usuario usuario = await UsuarioById(id);
+                Usuario usuario = await _dao.Busca(id);
 
                 if (usuario == null)
                 {
@@ -105,9 +106,7 @@ namespace Ao3RentcarsApi.Controllers
                 usuario.DataAlteracao = DateTime.Now;
                 ValidaUsuario(usuario);
 
-                _context.Entry(usuario).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
+                await _dao.Altera(usuario);
 
                 return NoContent();
             }
@@ -151,8 +150,7 @@ namespace Ao3RentcarsApi.Controllers
                 usuario.DataInclusao = DateTime.Now;
                 usuario.DataAlteracao = DateTime.Now;
                 ValidaUsuario(usuario);
-                _context.Usuarios.Add(usuario);
-                await _context.SaveChangesAsync();
+                await _dao.Insere(usuario);
 
                 return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
             }
@@ -191,14 +189,13 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Usuario usuario = await UsuarioById(id);
+                Usuario usuario = await _dao.Busca(id);
                 if (usuario == null)
                 {
                     return NotFound();
                 }
 
-                _context.Usuarios.Remove(usuario);
-                await _context.SaveChangesAsync();
+                await _dao.Apaga(usuario);
 
                 return NoContent();
             }
@@ -222,11 +219,6 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        private async Task<Usuario> UsuarioById(int id)
-        {
-            return await _context.Usuarios.FindAsync(id);
-        }
-
         private void ValidaUsuario(Usuario usuario)
         {
             int TamanhoMinimoNomeUsuario = int.Parse(AppData.Configuration["ConsistenciaDados:TamanhoMinimoNomeUsuario"]);
@@ -246,9 +238,5 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        //private bool UsuarioExists(int id)
-        //{
-        //    return _context.Usuarios.Any(e => e.Id == id);
-        //}
     }
 }

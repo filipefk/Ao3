@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ao3RentcarsApi.Models;
 using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
+using Ao3RentcarsApi.Dao;
 
 namespace Ao3RentcarsApi.Controllers
 {
@@ -15,11 +16,11 @@ namespace Ao3RentcarsApi.Controllers
     [ApiController]
     public class VeiculosController : ControllerBase
     {
-        private readonly RentcarsContext _context;
+        private readonly VeiculoDao _dao;
 
         public VeiculosController(RentcarsContext context)
         {
-            _context = context;
+            _dao = new VeiculoDao(context);
         }
 
         // GET: api/Veiculos
@@ -28,7 +29,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                return VeiculoDto.ToDtoList(await _context.Veiculos.ToListAsync());
+                return VeiculoDto.ToDtoList(await _dao.ListaTodos());
             }
             catch (SqliteException sqlLex)
             {
@@ -56,7 +57,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Veiculo veiculo = await VeiculoById(id);
+                Veiculo veiculo = await _dao.Busca(id);
 
                 if (veiculo == null)
                 {
@@ -94,7 +95,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Veiculo veiculo = await VeiculoById(id);
+                Veiculo veiculo = await _dao.Busca(id);
 
                 if (veiculo == null)
                 {
@@ -105,9 +106,7 @@ namespace Ao3RentcarsApi.Controllers
                 veiculo.DataAlteracao = DateTime.Now;
                 ValidaVeiculo(veiculo);
 
-                _context.Entry(veiculo).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
+                await _dao.Altera(veiculo);
 
                 return NoContent();
             }
@@ -151,8 +150,7 @@ namespace Ao3RentcarsApi.Controllers
                 veiculo.DataInclusao = DateTime.Now;
                 veiculo.DataAlteracao = DateTime.Now;
                 ValidaVeiculo(veiculo);
-                _context.Veiculos.Add(veiculo);
-                await _context.SaveChangesAsync();
+                await _dao.Insere(veiculo);
 
                 return CreatedAtAction(nameof(GetVeiculo), new { id = veiculo.Id }, veiculo);
             }
@@ -191,14 +189,13 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Veiculo veiculo = await VeiculoById(id);
+                Veiculo veiculo = await _dao.Busca(id);
                 if (veiculo == null)
                 {
                     return NotFound();
                 }
 
-                _context.Veiculos.Remove(veiculo);
-                await _context.SaveChangesAsync();
+                await _dao.Apaga(veiculo);
 
                 return NoContent();
             }
@@ -220,11 +217,6 @@ namespace Ao3RentcarsApi.Controllers
                 }
                 throw new ArgumentException("Erro ao tentar excluir o veículo de id = " + id + " - " + msg);
             }
-        }
-
-        private async Task<Veiculo> VeiculoById(int id)
-        {
-            return await _context.Veiculos.FindAsync(id);
         }
 
         private void ValidaVeiculo(Veiculo veiculo)
@@ -259,16 +251,12 @@ namespace Ao3RentcarsApi.Controllers
             {
                 throw new ArgumentException("A placa do veículo é obrigatória");
             }
-            string placa = _context.Veiculos.Where(v => v.Id != veiculo.Id && v.Placa == veiculo.Placa).Select(v => v.Placa).FirstOrDefault();
-            if (!string.IsNullOrEmpty(placa))
+            if (_dao.PlacaJaCadastrada(veiculo))
             {
-                throw new ArgumentException("A placa " + placa + " já está cadastrada para outro veículo");
+                throw new ArgumentException("A placa " + veiculo.Placa + " já está cadastrada para outro veículo");
             }
         }
 
-        //private bool VeiculoExists(int id)
-        //{
-        //    return _context.Veiculos.Any(e => e.Id == id);
-        //}
+        
     }
 }

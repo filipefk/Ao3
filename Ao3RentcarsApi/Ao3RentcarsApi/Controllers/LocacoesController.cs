@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ao3RentcarsApi.Models;
 using Ao3RentcarsApi.Models.Dto;
 using Microsoft.Data.Sqlite;
+using Ao3RentcarsApi.Dao;
 
 namespace Ao3RentcarsApi.Controllers
 {
@@ -15,11 +16,11 @@ namespace Ao3RentcarsApi.Controllers
     [ApiController]
     public class LocacoesController : ControllerBase
     {
-        private readonly RentcarsContext _context;
+        private readonly LocacaoDao _dao;
 
         public LocacoesController(RentcarsContext context)
         {
-            _context = context;
+            _dao = new LocacaoDao(context);
         }
 
         // GET: api/Locacoes
@@ -28,7 +29,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                return LocacaoDto.ToDtoList(await _context.Locacoes.ToListAsync());
+                return LocacaoDto.ToDtoList(await _dao.ListaTodos());
             }
             catch (SqliteException sqlLex)
             {
@@ -56,7 +57,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Locacao locacao = await LocacaoById(id);
+                Locacao locacao = await _dao.Busca(id);
 
                 if (locacao == null)
                 {
@@ -93,7 +94,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Locacao locacao = await LocacaoById(id);
+                Locacao locacao = await _dao.Busca(id);
 
                 if (locacao == null)
                 {
@@ -104,9 +105,7 @@ namespace Ao3RentcarsApi.Controllers
                 locacao.DataAlteracao = DateTime.Now;
                 ValidaLocacao(locacao);
 
-                _context.Entry(locacao).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
+                await _dao.Altera(locacao);
 
                 return NoContent();
             }
@@ -150,8 +149,7 @@ namespace Ao3RentcarsApi.Controllers
                 locacao.DataInclusao = DateTime.Now;
                 locacao.DataAlteracao = DateTime.Now;
                 ValidaLocacao(locacao);
-                _context.Locacoes.Add(locacao);
-                await _context.SaveChangesAsync();
+                await _dao.Insere(locacao);
 
                 return CreatedAtAction(nameof(GetLocacao), new { id = locacao.Id }, locacao);
             }
@@ -190,14 +188,13 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Locacao locacao = await LocacaoById(id);
+                Locacao locacao = await _dao.Busca(id);
                 if (locacao == null)
                 {
                     return NotFound();
                 }
 
-                _context.Locacoes.Remove(locacao);
-                await _context.SaveChangesAsync();
+                await _dao.Apaga(locacao);
 
                 return NoContent();
             }
@@ -221,11 +218,6 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        private async Task<Locacao> LocacaoById(int id)
-        {
-            return await _context.Locacoes.FindAsync(id);
-        }
-
         private void ValidaLocacao(Locacao locacao)
         {
             if (locacao.IdUsuario == 0 || locacao.IdVeiculo == 0)
@@ -243,33 +235,24 @@ namespace Ao3RentcarsApi.Controllers
             if (locacao.Id == 0)
             {
                 // É uma locação nova. Verificando se o carro não está locado
-                int IdVeiculo = _context.Locacoes.Where(l => l.IdVeiculo == locacao.IdVeiculo && l.DataFim == null).Select(l => l.IdVeiculo).FirstOrDefault();
-                if (IdVeiculo > 0)
+                if (_dao.VeiculoLocado(locacao.IdVeiculo))
                 {
-                    string placa = _context.Veiculos.Where(v => v.Id == IdVeiculo).Select(v => v.Placa).FirstOrDefault();
-                    throw new ArgumentException("O veículo de placa " + placa + " já está está locado");
+                    throw new ArgumentException("O veículo selecionado já está está locado");
                 }
             }
             else
             {
-                DateTime? DataFimDb = _context.Locacoes.Where(l => l.Id == locacao.Id).Select(l => l.DataFim).FirstOrDefault();
-                if (DataFimDb != null && locacao.DataFim == null)
+                if (_dao.Encerrada(locacao.Id) && locacao.DataFim == null)
                 {
-                    // Está tentando voltar a locação para "DataFim == null". Verificando se o carro não foi locado
-                    int IdVeiculo = _context.Locacoes.Where(l => l.IdVeiculo == locacao.IdVeiculo && l.DataFim == null).Select(l => l.IdVeiculo).FirstOrDefault();
-                    if (IdVeiculo > 0)
+                    // Está tentando reverter o encerramento da locação (DataFim = null). Verificando se o carro não foi locado
+                    if (_dao.VeiculoLocado(locacao.IdVeiculo))
                     {
-                        string placa = _context.Veiculos.Where(v => v.Id == IdVeiculo).Select(v => v.Placa).FirstOrDefault();
-                        throw new ArgumentException("Impossível reverter a locação para ativa pois o veículo de placa " + placa + " já foi locado novamente");
+                        throw new ArgumentException("Impossível reverter a locação para ativa pois o veículo selecionado já foi locado novamente");
                     }
                 }
             }
             
         }
 
-        //private bool LocacaoExists(int id)
-        //{
-        //    return _context.Locacoes.Any(e => e.Id == id);
-        //}
     }
 }

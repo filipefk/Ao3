@@ -306,6 +306,74 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Rota POST: api/Locar
+        /// Insere uma nova Locação feita por um cliente que escolhe o carro e informa seu nome e CPF
+        /// </summary>
+        /// <remarks>
+        /// Rota desprotegida. Não é necessário autenticação para consulta <br/>
+        /// Busca o id do Cliente pelo CPF, caso não encontre, cadastra um novo <br/>
+        /// Se não for informado o IdUsuario cadastra com IdUsuario = 1 <br/>
+        /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
+        /// IdVeiculo, DataInicio e DataFimPrevisto são obrigatórios <br/>
+        /// É feita uma validação se o Veículo já não está locado
+        /// </remarks>
+        /// <param name="locacaoClienteDto">
+        /// Dados da nova Locação
+        /// </param>
+        /// <returns>
+        /// Retorna a Locação criada
+        /// </returns>
+        [HttpPost]
+        [Route("Locar")]
+        [AllowAnonymous]
+        public async Task<ActionResult<LocacaoDto>> Locar(LocacaoClienteDto locacaoClienteDto)
+        {
+            try
+            {
+                Locacao locacao = _dao.ValidaLocacaoCliente(locacaoClienteDto);
+                if (locacao == null)
+                {
+                    throw new ArgumentException("Problemas para criar a locação");
+                }
+                locacao.Id = 0;
+                locacao.DataInclusao = DateTime.Now;
+                locacao.DataAlteracao = DateTime.Now;
+                Valida(locacao);
+                await _dao.Insere(locacao);
+
+                LocacaoDto locacaoDto = LocacaoDto.ToDto(locacao);
+                return CreatedAtAction(nameof(Insere), new { id = locacaoDto.Id }, locacaoDto);
+            }
+            catch (DbUpdateException dbUex)
+            {
+                string msg = dbUex.Message;
+                if (dbUex.InnerException != null)
+                {
+                    msg += " - " + dbUex.InnerException.Message;
+                }
+                throw new ArgumentException("Erro ao tentar salvar no banco - " + msg);
+            }
+            catch (SqliteException sqlLex)
+            {
+                string msg = sqlLex.Message;
+                if (sqlLex.InnerException != null)
+                {
+                    msg += " - " + sqlLex.InnerException.Message;
+                }
+                throw new ArgumentException("Problema de acesso ao banco de dados - " + msg);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    msg += " - " + ex.InnerException.Message;
+                }
+                throw new ArgumentException("Erro ao tentar criar uma nova locação - " + msg);
+            }
+        }
+
         private void Valida(Locacao locacao)
         {
             if (locacao.IdUsuario <= 0 || locacao.IdVeiculo <= 0 || locacao.IdCliente <= 0)

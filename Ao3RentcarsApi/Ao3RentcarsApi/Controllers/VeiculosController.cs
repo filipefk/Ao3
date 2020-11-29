@@ -113,8 +113,7 @@ namespace Ao3RentcarsApi.Controllers
         /// Rota GET: api/Veiculos/{id}
         /// </summary>
         /// <remarks>
-        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login <br/>
-        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
+        /// Rota desprotegida. Não é necessário autenticação para consulta
         /// </remarks>
         /// <param name="id">
         /// Id do Veículo
@@ -123,7 +122,7 @@ namespace Ao3RentcarsApi.Controllers
         /// Retorna o Veículo do id informado
         /// </returns>
         [HttpGet("{id}")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<VeiculoDto>> Busca(int id)
         {
             try

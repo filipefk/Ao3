@@ -17,8 +17,9 @@
       .when("/login", {
         templateUrl: "acesso/login.tpl.html",
       })
-      .when("/categorias", {
-        templateUrl: "categorias/listar.tpl.html",
+      .when("/alugar", {
+        templateUrl:
+          "veiculos-disponiveis/listar-veiculos-disponiveis.tpl.html",
       })
       .when("/gerenciar/categorias", {
         templateUrl: "categorias/categorias.tpl.html",

@@ -26,12 +26,13 @@
 
     function serviceF(_path) {
       return service.exemplo().then(function (response) {
-        console.log("veio da service", response);
+        //console.log("veio da service", response);
       });
     }
 
     function logout() {
       helper.setRootScope("userLogged", undefined);
+      helper.setRootScope("token", undefined);
       helper.path("/login");
     }
 

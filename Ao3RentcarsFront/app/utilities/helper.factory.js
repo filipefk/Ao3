@@ -59,7 +59,7 @@
       $rootScope.listaMensagens = [];
 
       var path = _path ? _path : $location.path();
-      if (path === "/login" || path === "/register" || path === "/home") {
+      if (path === "/login" || path === "/home" || path === "/alugar") {
         $location.path(path);
       } else {
         isLoggedIn(path);

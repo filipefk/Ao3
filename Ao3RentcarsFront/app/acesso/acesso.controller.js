@@ -30,9 +30,9 @@
         if (_resp.error) {
           helper.addMsg(_resp.msg, "danger");
         } else {
-          helper.setRootScope("userLogged", _resp.userLogged);
+          helper.setRootScope("userLogged", _resp.usuario);
+          helper.setRootScope("token", _resp.token);
           helper.path("/home");
-          helper.addMsg(_resp.message, "success");
         }
       });
     }

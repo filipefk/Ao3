@@ -35,6 +35,14 @@ namespace Ao3RentcarsApi.Dao
             return await _context.Veiculos.ToListAsync();
         }
 
+        public async Task<List<Veiculo>> ListaDisponiveis()
+        {
+            return await _context
+                .Veiculos
+                .FromSqlRaw("SELECT * FROM Veiculo WHERE id NOT IN (SELECT IdVeiculo FROM Locacao WHERE DataFim IS NULL)")
+                .ToListAsync();
+        }
+
         public async Task<int> Altera(Veiculo veiculo)
         {
             _context.Entry(veiculo).State = EntityState.Modified;

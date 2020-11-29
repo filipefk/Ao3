@@ -12,18 +12,38 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
 {
+    /// <summary>
+    /// Faz o CRUD dos Clientes
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ClientesController : ControllerBase
     {
         private readonly ClienteDao _dao;
 
+        /// <summary>
+        /// Construtor da classe
+        /// </summary>
+        /// <remarks>
+        /// Recebe o contexto e instancia a classe dao passando o contexto
+        /// </remarks>
+        /// <param name="context">
+        /// RentcarsContext
+        /// </param>
         public ClientesController(RentcarsContext context)
         {
             _dao = new ClienteDao(context);
         }
 
-        // GET: api/Clientes
+        /// <summary>
+        /// Rota GET: api/Clientes
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <returns>
+        /// Retorna uma lista de todos os Clientes Cadastrados
+        /// </returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<ClienteDto>>> ListaTodos()
@@ -53,7 +73,18 @@ namespace Ao3RentcarsApi.Controllers
 
         }
 
-        // GET: api/Clientes/5
+        /// <summary>
+        /// Rota GET: api/Clientes/{id}
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <param name="id">
+        /// Id do Cliente
+        /// </param>
+        /// <returns>
+        /// Retorna o Cliente do id informado
+        /// </returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<ClienteDto>> Busca(int id)
@@ -91,7 +122,77 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // PUT: api/Clientes/5
+        /// <summary>
+        /// Rota GET: api/Clientes/cpf={cpf}
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <param name="cpf">
+        /// Cpf do Cliente
+        /// </param>
+        /// <returns>
+        /// Retorna o Cliente do cpf informado
+        /// </returns>
+        [HttpGet("cpf={cpf}")]
+        [Authorize]
+        public async Task<ActionResult<ClienteDto>> Busca(string cpf)
+        {
+            try
+            {
+                Cliente cliente = _dao.BuscaPorCpf(cpf);
+
+                if (cliente == null)
+                {
+                    return NotFound();
+                }
+
+                ClienteDto clienteDto = ClienteDto.ToDto(cliente);
+
+                return clienteDto;
+            }
+            catch (SqliteException sqlLex)
+            {
+                string msg = sqlLex.Message;
+                if (sqlLex.InnerException != null)
+                {
+                    msg += " - " + sqlLex.InnerException.Message;
+                }
+                throw new ArgumentException("Problema de acesso ao banco de dados - " + msg);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    msg += " - " + ex.InnerException.Message;
+                }
+                throw new ArgumentException("Erro ao tentar buscar o cliente de cpf = " + cpf + " - " + msg);
+            }
+        }
+
+        /// <summary>
+        /// Rota PUT: api/Clientes/{id}
+        /// Altera os dados do Cliente do id informado
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// As propriedades do Cliente não informadas serão ignoradas <br/>
+        /// O Id e DataInclusao do Json sempre são ignorados <br/>
+        /// A DataAlteracao é preenchida automaticamente, mesmo que seja informada <br/>
+        /// Se informado, o Nome do Cliente deve ter no mínimo 4 caracteres <br/>
+        /// Todos os caracteres não numéricos do Cpf são removidos e é feita a validação do mesmo pelo dígito verificador <br/>
+        /// Não é permitido o cadastro de Cpf repetido
+        /// </remarks>
+        /// <param name="id">
+        /// id do Cliente a ser alterado
+        /// </param>
+        /// <param name="clienteDto">
+        /// Dados do Cliente que devem ser alterados
+        /// </param>
+        /// <returns>
+        /// Retorna o Cliente com os dados alterados
+        /// </returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Altera(int id, ClienteDto clienteDto)
@@ -144,7 +245,24 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // POST: api/Clientes
+        /// <summary>
+        /// Rota POST: api/Clientes
+        /// Insere um novo Cliente
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
+        /// O Nome do Cliente deve ter no mínimo 4 caracteres <br/>
+        /// O Nome e o Cpf é obrigatório <br/>
+        /// Todos os caracteres não numéricos do Cpf são removidos e é feita a validação do mesmo pelo dígito verificador <br/>
+        /// Não é permitido o cadastro de Cpf repetido
+        /// </remarks>
+        /// <param name="clienteDto">
+        /// Dados do novo Cliente
+        /// </param>
+        /// <returns>
+        /// Retorna o Cliente criado
+        /// </returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<ClienteDto>> Insere(ClienteDto clienteDto)
@@ -190,7 +308,16 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // DELETE: api/Clientes/5
+        /// <summary>
+        /// Rota DELETE: api/Clientes/{id}
+        /// Exclui o Cliente do id informado
+        /// </summary>
+        /// <param name="id">
+        /// id do Cliente a ser excluído
+        /// </param>
+        /// <returns>
+        /// Retorna NoContent
+        /// </returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> Exclui(int id)

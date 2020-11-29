@@ -11,18 +11,38 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
 {
+    /// <summary>
+    /// Faz o CRUD dos Usuários
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
         private readonly UsuarioDao _dao;
 
+        /// <summary>
+        /// Construtor da classe
+        /// </summary>
+        /// <remarks>
+        /// Recebe o contexto e instancia a classe dao passando o contexto
+        /// </remarks>
+        /// <param name="context">
+        /// RentcarsContext
+        /// </param>
         public UsuariosController(RentcarsContext context)
         {
             _dao = new UsuarioDao(context);
         }
 
-        // GET: api/Usuarios
+        /// <summary>
+        /// Rota GET: api/Usuarios
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <returns>
+        /// Retorna uma lista de todos os Usuários cadastrados. Obs.: Não mostra a senha dos usuários
+        /// </returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<UsuarioDto>>> ListaTodos()
@@ -52,7 +72,18 @@ namespace Ao3RentcarsApi.Controllers
 
         }
 
-        // GET: api/Usuarios/5
+        /// <summary>
+        /// Rota GET: api/Usuarios/{id}
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <param name="id">
+        /// Id do Usuário
+        /// </param>
+        /// <returns>
+        /// Retorna o Usuário do id informado
+        /// </returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<UsuarioDto>> Busca(int id)
@@ -90,7 +121,27 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // PUT: api/Usuarios/5
+        /// <summary>
+        /// Rota PUT: api/Usuarios/{id}
+        /// Altera os dados do Usuário do id informado
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// As propriedades do Usuário não informadas serão ignoradas <br/>
+        /// O Id e DataInclusao do Json sempre são ignorados <br/>
+        /// A DataAlteracao é preenchida automaticamente, mesmo que seja informada <br/>
+        /// Se informados, o Nome, Login e Senha do Usuário devem ter no mínimo 4 caracteres <br/>
+        /// Não é permitido o cadastro de Login repetido
+        /// </remarks>
+        /// <param name="id">
+        /// id do Usuário a ser alterado
+        /// </param>
+        /// <param name="usuarioDto">
+        /// Dados do Usuário que devem ser alterados
+        /// </param>
+        /// <returns>
+        /// Retorna o Usuário com os dados alterados
+        /// </returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Altera(int id, UsuarioDto usuarioDto)
@@ -143,7 +194,22 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // POST: api/Usuarios
+        /// <summary>
+        /// Rota POST: api/Usuarios
+        /// Insere um novo Usuário
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
+        /// O Nome, Login e Senha do Usuário devem ter no mínimo 4 caracteres <br/>
+        /// Não é permitido o cadastro de Login repetido
+        /// </remarks>
+        /// <param name="usuarioDto">
+        /// Dados do novo Usuário
+        /// </param>
+        /// <returns>
+        /// Retorna o Usuário criado
+        /// </returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<UsuarioDto>> Insere(UsuarioDto usuarioDto)
@@ -189,7 +255,16 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // DELETE: api/Usuarios/5
+        /// <summary>
+        /// Rota DELETE: api/Usuarios/{id}
+        /// Exclui o Usuário do id informado
+        /// </summary>
+        /// <param name="id">
+        /// id do Usuário a ser excluído
+        /// </param>
+        /// <returns>
+        /// Retorna NoContent
+        /// </returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> Exclui(int id)
@@ -246,6 +321,12 @@ namespace Ao3RentcarsApi.Controllers
             {
                 throw new ArgumentException("A senha do usuário é obrigatória, não pode ser em branco e deve ter mais de " + TamanhoMinimoLoginUsuario + " caracteres");
             }
+            Task<Usuario> usuarioDb = _dao.BuscaPorLogin(usuario.Login);
+            if (usuarioDb != null && usuarioDb.Id != usuario.Id)
+            {
+                throw new ArgumentException("Já existe outro usuário com o Login '" + usuario.Login + "' cadastrado");
+            }
+
         }
 
     }

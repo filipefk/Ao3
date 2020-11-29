@@ -11,18 +11,38 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
 {
+    /// <summary>
+    /// Faz o CRUD dos Veículos
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class VeiculosController : ControllerBase
     {
         private readonly VeiculoDao _dao;
 
+        /// <summary>
+        /// Construtor da classe
+        /// </summary>
+        /// <remarks>
+        /// Recebe o contexto e instancia a classe dao passando o contexto
+        /// </remarks>
+        /// <param name="context">
+        /// RentcarsContext
+        /// </param>
         public VeiculosController(RentcarsContext context)
         {
             _dao = new VeiculoDao(context);
         }
 
-        // GET: api/Veiculos
+        /// <summary>
+        /// Rota GET: api/Veiculos
+        /// </summary>
+        /// <remarks>
+        /// Rota desprotegida. Não é necessário autenticação para consulta
+        /// </remarks>
+        /// <returns>
+        /// Retorna uma lista de todos os Veículos cadastrados
+        /// </returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<VeiculoDto>>> ListaTodos()
@@ -51,7 +71,56 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // GET: api/Veiculos/5
+        /// <summary>
+        /// Rota GET: api/Veiculos/Disponiveis
+        /// </summary>
+        /// <remarks>
+        /// Rota desprotegida. Não é necessário autenticação para consulta
+        /// </remarks>
+        /// <returns>
+        /// Retorna uma lista dos Veículos disponíveis para locação
+        /// </returns>
+        [HttpGet]
+        [Route("api/[controller]/Disponiveis")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<VeiculoDto>>> ListaDisponiveis()
+        {
+            try
+            {
+                return VeiculoDto.ToDtoList(await _dao.ListaDisponiveis());
+            }
+            catch (SqliteException sqlLex)
+            {
+                string msg = sqlLex.Message;
+                if (sqlLex.InnerException != null)
+                {
+                    msg += " - " + sqlLex.InnerException.Message;
+                }
+                throw new ArgumentException("Problema de acesso ao banco de dados - " + msg);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    msg += " - " + ex.InnerException.Message;
+                }
+                throw new ArgumentException("Erro ao tentar buscar a lista de veículos - " + msg);
+            }
+        }
+
+        /// <summary>
+        /// Rota GET: api/Veiculos/{id}
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <param name="id">
+        /// Id do Veículo
+        /// </param>
+        /// <returns>
+        /// Retorna o Veículo do id informado
+        /// </returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<VeiculoDto>> Busca(int id)
@@ -90,7 +159,26 @@ namespace Ao3RentcarsApi.Controllers
 
         }
 
-        // PUT: api/Veiculos/5
+        /// <summary>
+        /// Rota PUT: api/Veiculos/{id}
+        /// Altera os dados do Veículo do id informado
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// As propriedades do Veículo não informadas serão ignoradas <br/>
+        /// O Id e DataInclusao do Json sempre são ignorados <br/>
+        /// A DataAlteracao é preenchida automaticamente, mesmo que seja informada <br/>
+        /// O Ano de Fabricação e o Ano do Modelo devem ser no mínimo 1990 e no máximo 1 ano a mais que o ano atual
+        /// </remarks>
+        /// <param name="id">
+        /// id do Veículo a ser alterado
+        /// </param>
+        /// <param name="veiculoDto">
+        /// Dados do Veículo que devem ser alterados
+        /// </param>
+        /// <returns>
+        /// Retorna o Veículo com os dados alterados
+        /// </returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Altera(int id, VeiculoDto veiculoDto)
@@ -143,7 +231,23 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // POST: api/Veiculos
+        /// <summary>
+        /// Rota POST: api/Veiculos
+        /// Insere um novo Veículo
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
+        /// O Ano de Fabricação e o Ano do Modelo devem ser no mínimo 1990 e no máximo 1 ano a mais que o ano atual <br/>
+        /// A Marca, Modelo e Placa são obrigatórios <br/>
+        /// Não é permitido o cadastro de Placa repetida
+        /// </remarks>
+        /// <param name="veiculoDto">
+        /// Dados do novo Veículo
+        /// </param>
+        /// <returns>
+        /// Retorna o Veículo criado
+        /// </returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<VeiculoDto>> Insere(VeiculoDto veiculoDto)
@@ -189,7 +293,16 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // DELETE: api/Veiculos/5
+        /// <summary>
+        /// Rota DELETE: api/Veiculos/{id}
+        /// Exclui o Veículo do id informado
+        /// </summary>
+        /// <param name="id">
+        /// id do Veículo a ser excluído
+        /// </param>
+        /// <returns>
+        /// Retorna NoContent
+        /// </returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> Exclui(int id)

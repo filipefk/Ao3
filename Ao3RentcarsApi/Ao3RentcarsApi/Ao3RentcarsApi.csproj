@@ -4,6 +4,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\netcoreapp2.0\net5.0\</OutputPath>
+    <DocumentationFile>bin\Debug\netcoreapp2.0\net5.0\Ao3RentcarsApi.XML</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Ao3Rentcars.db-shm" />
     <None Remove="Ao3Rentcars.db-wal" />

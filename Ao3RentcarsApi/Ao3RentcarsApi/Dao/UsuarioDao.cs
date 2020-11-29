@@ -60,7 +60,13 @@ namespace Ao3RentcarsApi.Dao
                 .Where(u => u.Login == login).Select(u => u.Id)
                 .FirstOrDefault();
 
-            return await _context.Usuarios.FindAsync(id);
+            if (id > 0)
+            {
+                return await _context.Usuarios.FindAsync(id);
+            }
+
+            return null;
+            
         }
 
         #endregion  ========== OPERAÇÕES ESPECÍFICAS DA ENTIDADE ==========

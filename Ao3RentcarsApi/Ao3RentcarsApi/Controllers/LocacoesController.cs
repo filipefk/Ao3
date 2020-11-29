@@ -11,18 +11,38 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Ao3RentcarsApi.Controllers
 {
+    /// <summary>
+    /// Faz o CRUD das Locações
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class LocacoesController : ControllerBase
     {
         private readonly LocacaoDao _dao;
 
+        /// <summary>
+        /// Construtor da classe
+        /// </summary>
+        /// <remarks>
+        /// Recebe o contexto e instancia a classe dao passando o contexto
+        /// </remarks>
+        /// <param name="context">
+        /// RentcarsContext
+        /// </param>
         public LocacoesController(RentcarsContext context)
         {
             _dao = new LocacaoDao(context);
         }
 
-        // GET: api/Locacoes
+        /// <summary>
+        /// Rota GET: api/Locacoes
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <returns>
+        /// Retorna uma lista de todas as Locações Cadastradas
+        /// </returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<LocacaoDto>>> ListaTodos()
@@ -51,7 +71,18 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // GET: api/Locacoes/5
+        /// <summary>
+        /// Rota GET: api/Locacoes/{id}
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// </remarks>
+        /// <param name="id">
+        /// Id da Locação
+        /// </param>
+        /// <returns>
+        /// Retorna a Locação do id informado
+        /// </returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<LocacaoDto>> Busca(int id)
@@ -89,7 +120,26 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // PUT: api/Locacoes/5
+        /// <summary>
+        /// Rota PUT: api/Locacoes/{id}
+        /// Altera os dados da Locação do id informado
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// As propriedades da Locação não informadas serão ignoradas <br/>
+        /// O Id e DataInclusao do Json sempre são ignorados <br/>
+        /// A DataAlteracao é preenchida automaticamente, mesmo que seja informada <br/>
+        /// É feita uma validação se o Veículo já não está locado
+        /// </remarks>
+        /// <param name="id">
+        /// id da Locação a ser alterada
+        /// </param>
+        /// <param name="locacaoDto">
+        /// Dados da Locação que devem ser alterados
+        /// </param>
+        /// <returns>
+        /// Retorna a Locação com os dados alterados
+        /// </returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Altera(int id, LocacaoDto locacaoDto)
@@ -141,7 +191,22 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // POST: api/Locacoes
+        /// <summary>
+        /// Rota POST: api/Locacoes
+        /// Insere uma nova Locação
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
+        /// O IdUsuario, IdVeiculo, IdCliente, DataInicio e DataFimPrevisto são obrigatórios <br/>
+        /// É feita uma validação se o Veículo já não está locado
+        /// </remarks>
+        /// <param name="locacaoDto">
+        /// Dados da nova Locação
+        /// </param>
+        /// <returns>
+        /// Retorna a Locação criada
+        /// </returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<LocacaoDto>> Insere(LocacaoDto locacaoDto)
@@ -187,7 +252,16 @@ namespace Ao3RentcarsApi.Controllers
             }
         }
 
-        // DELETE: api/Locacoes/5
+        /// <summary>
+        /// Rota DELETE: api/Locacoes/{id}
+        /// Exclui a Locação do id informado
+        /// </summary>
+        /// <param name="id">
+        /// id da Locação a ser excluída
+        /// </param>
+        /// <returns>
+        /// Retorna NoContent
+        /// </returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> Exclui(int id)
@@ -226,9 +300,9 @@ namespace Ao3RentcarsApi.Controllers
 
         private void Valida(Locacao locacao)
         {
-            if (locacao.IdUsuario == 0 || locacao.IdVeiculo == 0)
+            if (locacao.IdUsuario <= 0 || locacao.IdVeiculo <= 0 || locacao.IdCliente <= 0)
             {
-                throw new ArgumentException("Impossível salvar uma locação sem informar o IdUsuario e o IdVeiculo");
+                throw new ArgumentException("Impossível salvar uma locação sem informar o IdUsuario, IdVeiculo e o IdCliente");
             }
             if (locacao.DataInicio <= DateTime.MinValue)
             {

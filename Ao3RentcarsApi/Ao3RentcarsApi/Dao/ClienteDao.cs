@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Ao3RentcarsApi.Helpers;
 
 namespace Ao3RentcarsApi.Dao
 {
@@ -56,9 +57,10 @@ namespace Ao3RentcarsApi.Dao
 
         public Cliente BuscaPorCpf(string cpf)
         {
+            cpf = Validador.SoNumeros(cpf);
             return _context.Clientes
-                        .Where(c => c.Cpf == cpf)
-                        .FirstOrDefault();
+                    .Where(c => c.Cpf == cpf)
+                    .FirstOrDefault();
         }
 
         public bool CpfJaCadastrado(Cliente cliente)

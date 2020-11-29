@@ -9,16 +9,13 @@
   function routes($routeProvider) {
     $routeProvider
       .when("/", {
-        redirectTo: "/login",
+        redirectTo: "/home",
       })
       .when("/home", {
         templateUrl: "acesso/home.tpl.html",
       })
       .when("/login", {
         templateUrl: "acesso/login.tpl.html",
-      })
-      .when("/register", {
-        templateUrl: "acesso/register.tpl.html",
       })
       .when("/categorias", {
         templateUrl: "categorias/listar.tpl.html",

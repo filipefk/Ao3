@@ -24,7 +24,6 @@
     /* ***************    FUNÇÕES EXECUTADAS NA VIEW (HMTL)    **************** */
     vm.go = helper.go;
     vm.logar = logar;
-    vm.cadastrar = register;
 
     function logar() {
       return service.logar(vm.login).then(function (_resp) {
@@ -38,30 +37,6 @@
       });
     }
 
-    function register() {
-      var newUser = {
-        name: vm.user.nome,
-        email: vm.user.email,
-        username: vm.user.username,
-        password: vm.user.password,
-      };
-      return service.register(newUser).then(tratarRes);
-
-      // Estou usando uma função declarada em vez de uma função anônima dentro do '.then(fn)'
-      // Observe que essa função 'tratarRes' está dentro da função 'register'
-      // Então ela só está disponível para ser usada dentro do escopo da
-      // função 'register', caso tentar usa-la no contexto da controller
-      // não vai funcionar porque vai dizer que não existe essa função
-      function tratarRes(_resp) {
-        if (_resp.error) {
-          helper.addMsg(_resp.msg, "danger", "Tente novamente");
-        } else {
-          helper.addMsg(_resp.message, "success");
-          helper.path("/home");
-          helper.setRootScope("userLogged", _resp.userLogged);
-        }
-      }
-    }
     /* ***************    FUNÇÕES INSTERNAS    ******************************** */
   }
 })();

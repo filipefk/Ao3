@@ -1,0 +1,70 @@
+<div
+  ng-controller="VeiculosDisponiveisController as vm"
+  class="container"
+  ng-init="vm.iniciar()"
+>
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Alugar um Veículo</h2>
+  </div>
+  <hr />
+  <div class="jumbotron">
+    <h1 class="display-5">{{ vm.veiculo.modelo }}</h1>
+    <p class="lead">
+      {{ vm.veiculo.marca }} {{ vm.veiculo.modelo }} {{ vm.veiculo.anoFabricacao
+      }}/{{ vm.veiculo.anoModelo }} placa: {{ vm.veiculo.placa }}
+    </p>
+    <hr class="my-4" />
+    <h3 class="display-5">Dados do cliente</h3>
+    <form name="vm.form" ng-submit="vm.submitLocacao()">
+      <div class="form-group">
+        <label>Nome</label>
+        <input
+          class="form-control"
+          type="text"
+          name="nome"
+          placeholder="Nome"
+          ng-model="vm.locacaoCliente.nome"
+        />
+      </div>
+      <div class="form-group">
+        <label>CPF</label>
+        <input
+          class="form-control"
+          type="text"
+          name="cpf"
+          placeholder="CPF"
+          ng-model="vm.locacaoCliente.cpf"
+        />
+      </div>
+      <h3 class="display-5">Dados da reserva</h3>
+      <div class="form-group">
+        <label>Data de retirada do veículo</label>
+        <input
+          class="form-control"
+          type="text"
+          name="dataInicio"
+          placeholder="Início"
+          ng-model="vm.locacaoCliente.dataInicio"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Data de devolução do veículo</label>
+        <input
+          class="form-control"
+          type="text"
+          name="dataFim"
+          placeholder="Devolução"
+          ng-model="vm.locacaoCliente.dataFimPrevisto"
+        />
+      </div>
+
+      <button class="btn btn-primary" type="submit">Alugar</button>
+    </form>
+
+    <br />
+    <p>
+      <a ng-click="vm.go('/alugar')" class="text-info c-pointer">Voltar</a>
+    </p>
+  </div>
+</div>

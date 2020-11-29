@@ -19,10 +19,7 @@
 
     // vm.params
 
-    function funcao() {
-      console.log("Função do meu componente");
-      console.log("listaMensagens", $rootScope.listaMensagens);
-    }
+    function funcao() {}
     /* ***************    FUNÇÕES INSTERNAS    ******************************** */
   }
 })();

@@ -25,9 +25,7 @@
     }
 
     function serviceF(_path) {
-      return service.exemplo().then(function (response) {
-        //console.log("veio da service", response);
-      });
+      return service.exemplo().then(function (response) {});
     }
 
     function logout() {

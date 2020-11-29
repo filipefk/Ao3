@@ -5,7 +5,7 @@
   class="navbar navbar-expand-lg navbar-dark bg-primary py-2 px-5 mb-3"
 >
   <i class="material-icons md-36 mr-1" aria-hidden="true">commute</i>
-  <a class="navbar-brand">Ao3 Aluguel de Veículos</a>
+  <a class="navbar-brand">ao&sup3; Aluguel de Veículos</a>
   <button
     class="navbar-toggler"
     type="button"
@@ -29,11 +29,6 @@
           Home
         </a>
       </li>
-      <!-- <li class="nav-item">
-                <a class="nav-link c-pointer" ng-click="vm.serviceF()" ng-class="{'active': vm.logado}">
-                    Service ?
-                </a>
-            </li> -->
       <li class="nav-item">
         <a
           class="nav-link c-pointer"
@@ -42,15 +37,7 @@
           >Alugar um Veículo</a
         >
       </li>
-      <li class="nav-item">
-        <a
-          class="nav-link c-pointer"
-          ng-click="vm.go('/itens')"
-          ng-class="{'active': page === 'itens'}"
-          >Itens</a
-        >
-      </li>
-      <div class="nav-item dropdown">
+      <div ng-show="userLogged" class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
           role="button"
@@ -59,18 +46,28 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Gerenciar
+          Cadastro
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a
             class="dropdown-item c-pointer"
             ng-click="vm.go('/gerenciar/itens')"
-            >Itens</a
+            >Usuários</a
           >
           <a
             class="dropdown-item c-pointer"
             ng-click="vm.go('/gerenciar/categorias')"
-            >Categorias</a
+            >Clientes</a
+          >
+          <a
+            class="dropdown-item c-pointer"
+            ng-click="vm.go('/gerenciar/categorias')"
+            >Veículos</a
+          >
+          <a
+            class="dropdown-item c-pointer"
+            ng-click="vm.go('/gerenciar/categorias')"
+            >Locações</a
           >
         </div>
       </div>

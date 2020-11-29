@@ -31,6 +31,7 @@
           tipo: _tipo ? _tipo : "info",
           acao: _acao ? _acao : "",
         });
+        window.scrollTo(0, 0);
       }
     }
 
@@ -48,18 +49,20 @@
     }
 
     function sendError(_error) {
-      return { error: true, msg: _error.data.message };
+      var erro = { error: true, msg: _error.data.message };
+      return erro;
     }
 
-    // Retirei o 'vm.go' do header.controller, porque precisamos
-    // dessa funcionalidade em todo lugar que formos trocar de rota
-    // então colocamos no nosso helper.factory e usamos nas demais controlllers
     function go(_path) {
       // Limpa as mensagens quando estiver trocando de rota
       $rootScope.listaMensagens = [];
 
       var path = _path ? _path : $location.path();
-      if (path === "/login" || path === "/home" || path === "/alugar") {
+      if (
+        path === "/login" ||
+        path === "/home" ||
+        path.indexOf("/alugar") > -1
+      ) {
         $location.path(path);
       } else {
         isLoggedIn(path);
@@ -76,9 +79,6 @@
         }
       }
 
-      // Implementei mais algumas coisas no 'setPage' para poder
-      // contemplas as novas rotas e o título da página ficar mais amigavel (formatado)
-      // pode ver o exemplo na rota '/gerenciar/categorias'
       function setPage() {
         var page = $location.path().substring(1);
         if (page.indexOf("/") === -1) return page;

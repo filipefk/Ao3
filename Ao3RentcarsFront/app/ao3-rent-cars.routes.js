@@ -21,6 +21,9 @@
         templateUrl:
           "veiculos-disponiveis/listar-veiculos-disponiveis.tpl.html",
       })
+      .when("/alugar/:id", {
+        templateUrl: "veiculos-disponiveis/alugar-veiculo.tpl.html",
+      })
       .when("/gerenciar/categorias", {
         templateUrl: "categorias/categorias.tpl.html",
       })

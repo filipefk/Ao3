@@ -16,7 +16,7 @@
           <th scope="col" width="30%">Modelo</th>
           <th scope="col" width="20%">Ano</th>
           <th scope="col" width="20%">Placa</th>
-          <th scope="col"></th>
+          <th scope="col" width="5%"></th>
         </tr>
       </thead>
       <tbody>
@@ -29,7 +29,7 @@
             <button
               type="button"
               class="btn btn-link mr-2"
-              ng-click="vm.irEditar(item)"
+              ng-click="vm.go('/alugar/' + item.id)"
             >
               Alugar
             </button>

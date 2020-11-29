@@ -81,7 +81,7 @@ namespace Ao3RentcarsApi.Controllers
         /// Retorna uma lista dos Veículos disponíveis para locação
         /// </returns>
         [HttpGet]
-        [Route("api/[controller]/Disponiveis")]
+        [Route("Disponiveis")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<VeiculoDto>>> ListaDisponiveis()
         {

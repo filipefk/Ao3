@@ -38,7 +38,9 @@ namespace Ao3RentcarsApi.Controllers
         /// Rota GET: api/Locacoes
         /// </summary>
         /// <remarks>
-        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <returns>
         /// Retorna uma lista de todas as Locações Cadastradas
@@ -75,7 +77,9 @@ namespace Ao3RentcarsApi.Controllers
         /// Rota GET: api/Locacoes/{id}
         /// </summary>
         /// <remarks>
-        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <param name="id">
         /// Id da Locação
@@ -126,6 +130,8 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// As propriedades da Locação não informadas serão ignoradas <br/>
         /// O Id e DataInclusao do Json sempre são ignorados <br/>
         /// A DataAlteracao é preenchida automaticamente, mesmo que seja informada <br/>
@@ -197,6 +203,8 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
         /// O IdUsuario, IdVeiculo, IdCliente, DataInicio e DataFimPrevisto são obrigatórios <br/>
         /// É feita uma validação se o Veículo já não está locado
@@ -256,6 +264,11 @@ namespace Ao3RentcarsApi.Controllers
         /// Rota DELETE: api/Locacoes/{id}
         /// Exclui a Locação do id informado
         /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
+        /// </remarks>
         /// <param name="id">
         /// id da Locação a ser excluída
         /// </param>

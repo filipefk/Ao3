@@ -38,7 +38,9 @@ namespace Ao3RentcarsApi.Controllers
         /// Rota GET: api/Usuarios
         /// </summary>
         /// <remarks>
-        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <returns>
         /// Retorna uma lista de todos os Usuários cadastrados. Obs.: Não mostra a senha dos usuários
@@ -76,7 +78,9 @@ namespace Ao3RentcarsApi.Controllers
         /// Rota GET: api/Usuarios/{id}
         /// </summary>
         /// <remarks>
-        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <param name="id">
         /// Id do Usuário
@@ -127,6 +131,8 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// As propriedades do Usuário não informadas serão ignoradas <br/>
         /// O Id e DataInclusao do Json sempre são ignorados <br/>
         /// A DataAlteracao é preenchida automaticamente, mesmo que seja informada <br/>
@@ -200,6 +206,8 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
         /// O Nome, Login e Senha do Usuário devem ter no mínimo 4 caracteres <br/>
         /// Não é permitido o cadastro de Login repetido
@@ -259,6 +267,11 @@ namespace Ao3RentcarsApi.Controllers
         /// Rota DELETE: api/Usuarios/{id}
         /// Exclui o Usuário do id informado
         /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
+        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
+        /// </remarks>
         /// <param name="id">
         /// id do Usuário a ser excluído
         /// </param>

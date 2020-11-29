@@ -352,3 +352,7 @@ MigrationBackup/
 # Arquivos temporários do DBeaver
 *.db-shm
 *.db-wal
+
+node_modules
+dist
+coverage

@@ -1,0 +1,44 @@
+<div
+  ng-controller="VeiculosLocadosController as vm"
+  class="container"
+  ng-init="vm.iniciar()"
+>
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Veículos Locados</h2>
+  </div>
+  <hr />
+
+  <div ng-show="vm.listaVeiculosLocados.length" class="list-group">
+    <table class="table">
+      <thead class="table-active">
+        <tr>
+          <th scope="col" width="10%">Marca</th>
+          <th scope="col" width="30%">Modelo</th>
+          <th scope="col" width="20%">Ano</th>
+          <th scope="col" width="20%">Placa</th>
+          <th scope="col" width="5%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in vm.listaVeiculosLocados">
+          <td>{{item.marca}}</td>
+          <td>{{item.modelo}}</td>
+          <td>{{item.anoModelo}}</td>
+          <td>{{item.placa}}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-link text-danger"
+              ng-click="vm.encerrarLocacao(item.id)"
+            >
+              Encerrar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div ng-hide="vm.listaVeiculosLocados.length" class="alert alert-info">
+    Nenhum veículo locado.
+  </div>
+</div>

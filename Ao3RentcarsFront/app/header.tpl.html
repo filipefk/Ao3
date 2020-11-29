@@ -37,6 +37,25 @@
           >Alugar um Veículo</a
         >
       </li>
+
+      <li ng-show="userLogged" class="nav-item">
+        <a
+          class="nav-link c-pointer"
+          ng-click="vm.go('/usuarios')"
+          ng-class="{'active': page === 'usuarios'}"
+          >Usuários</a
+        >
+      </li>
+
+      <li ng-show="userLogged" class="nav-item">
+        <a
+          class="nav-link c-pointer"
+          ng-click="vm.go('/clientes')"
+          ng-class="{'active': page === 'clientes'}"
+          >Clientes</a
+        >
+      </li>
+
       <div ng-show="userLogged" class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
@@ -46,28 +65,41 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Cadastro
+          Veículos
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item c-pointer" ng-click="vm.go('/alugar')"
+            >Disponíveis</a
+          >
+          <a
+            class="dropdown-item c-pointer"
+            ng-click="vm.go('/veiculos/locados')"
+            >Locados</a
+          >
+        </div>
+      </div>
+
+      <div ng-show="userLogged" class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          role="button"
+          id="navbarDropdown"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Locações
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a
             class="dropdown-item c-pointer"
-            ng-click="vm.go('/gerenciar/itens')"
-            >Usuários</a
+            ng-click="vm.go('/locacoes/ativas')"
+            >Ativas</a
           >
           <a
             class="dropdown-item c-pointer"
-            ng-click="vm.go('/gerenciar/categorias')"
-            >Clientes</a
-          >
-          <a
-            class="dropdown-item c-pointer"
-            ng-click="vm.go('/gerenciar/categorias')"
-            >Veículos</a
-          >
-          <a
-            class="dropdown-item c-pointer"
-            ng-click="vm.go('/gerenciar/categorias')"
-            >Locações</a
+            ng-click="vm.go('/locacoes/encerradas')"
+            >Encerradas</a
           >
         </div>
       </div>

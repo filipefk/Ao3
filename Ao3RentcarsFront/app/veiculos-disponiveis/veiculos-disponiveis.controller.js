@@ -30,7 +30,7 @@
     vm.submitLocacao = submitLocacao;
 
     function iniciar() {
-      var userLogged = helper.setRootScope("userLogged");
+      var userLogged = helper.getRootScope("userLogged");
       if (userLogged) {
         vm.locacaoCliente.idUsuario = userLogged.id;
       }
@@ -53,7 +53,6 @@
         helper.path("/alugar");
         helper.addMsg("Reserva concluída com sucesso!", "success");
       } else {
-        console.log(_locacao);
         helper.addMsg("Erro ao tentar concluir a reserva", "danger");
       }
     }

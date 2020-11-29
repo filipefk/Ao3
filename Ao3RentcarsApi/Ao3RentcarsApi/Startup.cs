@@ -29,6 +29,7 @@ namespace Ao3RentcarsApi
             string connectionString = AppData.Configuration["ConexaoSqlite:SqliteConnectionString"];
             services.AddDbContext<RentcarsContext>(options =>
                                                     options.UseSqlite(connectionString));
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -101,6 +102,13 @@ namespace Ao3RentcarsApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -40,7 +40,6 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
-        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
         /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <returns>
@@ -80,7 +79,6 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
-        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
         /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <param name="id">
@@ -131,7 +129,6 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login
-        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
         /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <param name="cpf">
@@ -183,7 +180,6 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
-        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
         /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// As propriedades do Cliente não informadas serão ignoradas <br/>
         /// O Id e DataInclusao do Json sempre são ignorados <br/>
@@ -259,7 +255,6 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
-        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
         /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// O Id, DataInclusao e DataAlteracao são preenchidos automaticamente, mesmo que sejam informadas <br/>
         /// O Nome do Cliente deve ter no mínimo 4 caracteres <br/>
@@ -324,7 +319,6 @@ namespace Ao3RentcarsApi.Controllers
         /// </summary>
         /// <remarks>
         /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". o token é obtido na rota api/Login <br/>
-        /// ATENÇÃO!!! Coloque a palavra "Bearer", um espaço e depois o token no valor do header. <br/>
         /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
         /// </remarks>
         /// <param name="id">

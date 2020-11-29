@@ -22,6 +22,8 @@ namespace Ao3RentcarsApi.Models.Dto
 
         public int AnoFabricacao { get; set; }
 
+        public int IdLocacao { get; set; }
+
 
         /// <summary>
         /// Copia os dados de um Veiculo para um novo VeiculoDto

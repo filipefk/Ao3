@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Ao3RentcarsApi.Models.Dto;
+using System;
 
 namespace Ao3RentcarsApi.Dao
 {
@@ -41,6 +43,46 @@ namespace Ao3RentcarsApi.Dao
                 .Veiculos
                 .FromSqlRaw("SELECT * FROM Veiculo WHERE id NOT IN (SELECT IdVeiculo FROM Locacao WHERE DataFim IS NULL)")
                 .ToListAsync();
+        }
+
+        public List<VeiculoDto> ListaLocados()
+        {
+            var query = _context.Veiculos
+                    .Join(
+                        _context.Locacoes,
+                        veiculos => veiculos.Id,
+                        locacoes => locacoes.Veiculo.Id,
+                        (veiculos, locacoes) => new
+                        {
+                            veiculos.Id,
+                            veiculos.DataInclusao,
+                            veiculos.DataAlteracao,
+                            veiculos.Modelo,
+                            veiculos.Marca,
+                            veiculos.Placa,
+                            veiculos.AnoModelo,
+                            veiculos.AnoFabricacao,
+                            IdLocacao = locacoes.Id,
+                            locacoes.DataFim
+                        })
+                    .Where(v => v.DataFim == null)
+                    .ToList();
+
+            IEnumerable<VeiculoDto> veiculosDto = from v in query
+                                                  select new VeiculoDto()
+                                                  {
+                                                      Id = v.Id,
+                                                      DataInclusao = v.DataInclusao,
+                                                      DataAlteracao = v.DataAlteracao,
+                                                      Modelo = v.Modelo,
+                                                      Marca = v.Marca,
+                                                      Placa = v.Placa,
+                                                      AnoModelo = v.AnoModelo,
+                                                      AnoFabricacao = v.AnoFabricacao,
+                                                      IdLocacao = v.IdLocacao
+                                                  };
+
+            return veiculosDto.ToList();
         }
 
         public async Task<int> Altera(Veiculo veiculo)
@@ -109,6 +151,20 @@ namespace Ao3RentcarsApi.Dao
                     .Where(l => l.IdVeiculo == id && l.DataFim == null)
                     .Select(l => l.Id)
                     .FirstOrDefault() > 0);
+        }
+
+        public async Task<Locacao> BuscaLocacao(int idVeiculo)
+        {
+            return await _context
+                .Locacoes
+                .Where(l => l.IdVeiculo == idVeiculo && l.DataFim == null)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> AlteraLocacao(Locacao locacao)
+        {
+            _context.Entry(locacao).State = EntityState.Modified;
+            return await _context.SaveChangesAsync();
         }
 
         #endregion ========== OPERAÇÕES ESPECÍFICAS DA ENTIDADE ==========

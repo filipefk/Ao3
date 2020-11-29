@@ -110,6 +110,45 @@ namespace Ao3RentcarsApi.Controllers
         }
 
         /// <summary>
+        /// Rota GET: api/Veiculos/Locados
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
+        /// </remarks>
+        /// <returns>
+        /// Retorna uma lista dos Veículos que estão locados
+        /// </returns>
+        [HttpGet]
+        [Route("Locados")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<VeiculoDto>>> ListaLocados()
+        {
+            try
+            {
+                return _dao.ListaLocados();
+            }
+            catch (SqliteException sqlLex)
+            {
+                string msg = sqlLex.Message;
+                if (sqlLex.InnerException != null)
+                {
+                    msg += " - " + sqlLex.InnerException.Message;
+                }
+                throw new ArgumentException("Problema de acesso ao banco de dados - " + msg);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    msg += " - " + ex.InnerException.Message;
+                }
+                throw new ArgumentException("Erro ao tentar buscar a lista de veículos - " + msg);
+            }
+        }
+
+        /// <summary>
         /// Rota GET: api/Veiculos/{id}
         /// </summary>
         /// <remarks>
@@ -231,6 +270,67 @@ namespace Ao3RentcarsApi.Controllers
                 throw new ArgumentException("Erro ao tentar alterar o veículo de id = " + id + " - " + msg);
             }
         }
+
+        /// <summary>
+        /// Rota PUT: api/Veiculos/{id}/Encerrar
+        /// Encerra a locação do veícilo do id indicado
+        /// </summary>
+        /// <remarks>
+        /// Rota protegida. Deve ser inserido no Header a chave "Authorization" e o valor "Bearer token". O token é obtido na rota api/Login <br/>
+        /// Se estiver usando o Swagger tem um botão no topo, a direita escrito "Authorize", clique nele e preencha com a palavra "Bearer", um espaço e depois o token
+        /// <param name="id">
+        /// id do Veículo a ser encerrada a locação
+        /// </param>
+        /// <returns>
+        /// Retorna NoContent
+        /// </returns>
+        [HttpPut("{id}/Encerrar")]
+        [Authorize]
+        public async Task<IActionResult> Encerrar(int id)
+        {
+            try
+            {
+                Locacao locacao = await _dao.BuscaLocacao(id);
+
+                if (locacao == null)
+                {
+                    return NotFound();
+                }
+                locacao.DataAlteracao = DateTime.Now;
+                locacao.DataFim = DateTime.Now;
+                await _dao.AlteraLocacao(locacao);
+
+                return NoContent();
+            }
+            catch (DbUpdateException dbUex)
+            {
+                string msg = dbUex.Message;
+                if (dbUex.InnerException != null)
+                {
+                    msg += " - " + dbUex.InnerException.Message;
+                }
+                throw new ArgumentException("Erro ao tentar salvar no banco - " + msg);
+            }
+            catch (SqliteException sqlLex)
+            {
+                string msg = sqlLex.Message;
+                if (sqlLex.InnerException != null)
+                {
+                    msg += " - " + sqlLex.InnerException.Message;
+                }
+                throw new ArgumentException("Problema de acesso ao banco de dados - " + msg);
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    msg += " - " + ex.InnerException.Message;
+                }
+                throw new ArgumentException("Erro ao tentar alterar o veículo de id = " + id + " - " + msg);
+            }
+        }
+
 
         /// <summary>
         /// Rota POST: api/Veiculos

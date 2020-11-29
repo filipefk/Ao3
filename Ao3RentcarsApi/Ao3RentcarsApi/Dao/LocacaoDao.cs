@@ -77,7 +77,7 @@ namespace Ao3RentcarsApi.Dao
             return (_context.Locacoes.Where(l => l.Id == id).Select(l => l.DataFim).FirstOrDefault() != null);
         }
 
-        internal Locacao ValidaLocacaoCliente(LocacaoClienteDto locacaoClienteDto)
+        public Locacao EfetuaLocacaoCliente(LocacaoClienteDto locacaoClienteDto)
         {
             Locacao locacao = null;
             locacaoClienteDto.Cpf = Validador.SoNumeros(locacaoClienteDto.Cpf);

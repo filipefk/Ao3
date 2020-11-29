@@ -331,7 +331,7 @@ namespace Ao3RentcarsApi.Controllers
         {
             try
             {
-                Locacao locacao = _dao.ValidaLocacaoCliente(locacaoClienteDto);
+                Locacao locacao = _dao.EfetuaLocacaoCliente(locacaoClienteDto);
                 if (locacao == null)
                 {
                     throw new ArgumentException("Problemas para criar a locação");
@@ -373,6 +373,7 @@ namespace Ao3RentcarsApi.Controllers
                 throw new ArgumentException("Erro ao tentar criar uma nova locação - " + msg);
             }
         }
+
 
         private void Valida(Locacao locacao)
         {

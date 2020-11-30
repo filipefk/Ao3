@@ -1,0 +1,67 @@
+<div
+  ng-controller="VeiculosCadastroController as vm"
+  class="container"
+  ng-init="vm.iniciar()"
+>
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Cadastro de Veículos</h2>
+  </div>
+  <hr />
+  <form name="vm.form" ng-submit="vm.salvarNovoVeiculo()">
+    <div class="form-group">
+      <label>Marca</label>
+      <select
+        class="form-control"
+        name="marcas"
+        ng-model="vm.marca"
+        ng-change="vm.preencheModelos()"
+        ng-options="marca as marca.name for marca in vm.listaMarcas"
+      >
+        <option value="" disabled selected>Selecione a Marca</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Modelo</label>
+      <select
+        class="form-control"
+        name="modelos"
+        ng-model="vm.modelo"
+        ng-options="modelo as modelo.name for modelo in vm.listaModelos"
+      >
+        <option value="" disabled selected>Selecione o Modelo</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Placa</label>
+      <input
+        class="form-control"
+        type="text"
+        name="placa"
+        placeholder="Placa"
+        ng-model="vm.veiculo.placa"
+      />
+    </div>
+    <div class="form-group">
+      <label>Ano do Modelo</label>
+      <input
+        class="form-control"
+        type="number"
+        name="anoModelo"
+        placeholder="Ano do Modelo"
+        ng-model="vm.veiculo.anoModelo"
+      />
+    </div>
+    <div class="form-group">
+      <label>Ano de Fabricação</label>
+      <input
+        class="form-control"
+        type="number"
+        name="anoFabricacao"
+        placeholder="Ano de Fabricação"
+        ng-model="vm.veiculo.anoFabricacao"
+      />
+    </div>
+    <button class="btn btn-primary" type="submit">Salvar</button>
+  </form>
+</div>

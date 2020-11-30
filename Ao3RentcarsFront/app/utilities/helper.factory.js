@@ -18,6 +18,7 @@
       sendError: sendError,
       path: path,
       go: go,
+      clearMsg: clearMsg,
     };
 
     function addMsg(_msg, _tipo, _acao) {
@@ -33,6 +34,10 @@
         });
         window.scrollTo(0, 0);
       }
+    }
+
+    function clearMsg() {
+      $rootScope.listaMensagens.length = 0;
     }
 
     function path(_path) {

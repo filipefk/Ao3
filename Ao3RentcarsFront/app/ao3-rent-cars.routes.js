@@ -27,6 +27,9 @@
       .when("/veiculos/locados", {
         templateUrl: "veiculos-locados/listar-veiculos-locados.tpl.html",
       })
+      .when("/veiculos/cadastro", {
+        templateUrl: "veiculos-cadastro/veiculos-cadastro.tpl.html",
+      })
       .when("/gerenciar/categorias/new", {
         templateUrl: "categorias/formulario.tpl.html",
       })

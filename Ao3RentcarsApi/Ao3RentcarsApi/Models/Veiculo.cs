@@ -26,10 +26,16 @@ namespace Ao3RentcarsApi.Models
         [Required]
         public string Marca { get; set; }
 
+        private string _placa { get; set; }
+
         [Required]
         [MinLength(7)]
         [MaxLength(7)]
-        public string Placa { get; set; }
+        public string Placa
+        {
+            get { return _placa.ToUpper(); }
+            set { _placa = value.ToUpper(); }
+        }
 
         [Required]
         public int AnoModelo { get; set; }

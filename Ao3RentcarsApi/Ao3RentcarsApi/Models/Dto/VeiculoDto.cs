@@ -8,15 +8,20 @@ namespace Ao3RentcarsApi.Models.Dto
     {
         public int Id { get; set; }
 
-        public DateTime DataInclusao { get; set; }
+        public DateTime? DataInclusao { get; set; }
 
-        public DateTime DataAlteracao { get; set; }
+        public DateTime? DataAlteracao { get; set; }
 
         public string Modelo { get; set; }
 
         public string Marca { get; set; }
 
-        public string Placa { get; set; }
+        private string _placa { get; set; }
+
+        public string Placa {
+            get { return _placa.ToUpper(); }
+            set { _placa = value.ToUpper(); }
+        }
 
         public int AnoModelo { get; set; }
 
@@ -56,8 +61,8 @@ namespace Ao3RentcarsApi.Models.Dto
             Veiculo veiculo = new Veiculo()
             {
                 Id = veiculoDto.Id,
-                DataInclusao = veiculoDto.DataInclusao,
-                DataAlteracao = veiculoDto.DataAlteracao,
+                DataInclusao = veiculoDto.DataInclusao == null ? DateTime.Now : (DateTime)veiculoDto.DataInclusao,
+                DataAlteracao = veiculoDto.DataAlteracao == null ? DateTime.Now : (DateTime)veiculoDto.DataAlteracao,
                 Modelo = veiculoDto.Modelo,
                 Marca = veiculoDto.Marca,
                 Placa = veiculoDto.Placa,
